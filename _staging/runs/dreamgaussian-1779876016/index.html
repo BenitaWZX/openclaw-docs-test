@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>dreamgaussian-1779876016 · Reproducible OpenSource Image-to-3D Research</title>
+<style>
+  :root{--bg:#0d0d12;--bg1:#13131a;--bg2:#1a1a24;--border:#2a2a3a;
+    --text:#e8e8f8;--text1:#a0a0c0;--text2:#606080;
+    --accent:#7c6af7;--green:#4ade80;--red:#f87171;--amber:#fbbf24;--blue:#60a5fa;--teal:#2dd4bf;
+    --mono:'SF Mono','Fira Code',monospace;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:14px;line-height:1.6;padding:0;}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 24px;}
+  h1{font-size:22px;font-weight:700;letter-spacing:-0.3px;margin-bottom:4px;}
+  h2{font-size:15px;font-weight:600;color:var(--text1);margin:24px 0 10px;}
+  h3{font-size:13px;font-weight:600;color:var(--text1);margin:0 0 8px;}
+  a{color:var(--blue);text-decoration:none;}a:hover{text-decoration:underline;}
+  .sub{font-size:12px;color:var(--text2);margin-bottom:28px;}
+  .card{background:var(--bg1);border:1px solid var(--border);border-radius:10px;
+    padding:16px 20px;margin-bottom:12px;}
+  .badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+    padding:2px 10px;border-radius:99px;}
+  .badge.ok{background:rgba(74,222,128,0.12);color:var(--green);}
+  .badge.fail{background:rgba(248,113,113,0.12);color:var(--red);}
+  .badge.warn{background:rgba(251,191,36,0.12);color:var(--amber);}
+  .kv{display:flex;align-items:center;justify-content:space-between;
+    font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);}
+  .kv:last-child{border-bottom:none;}
+  .kv .k{color:var(--text2);}
+  .kv .v{font-family:var(--mono);color:var(--teal);font-size:11px;}
+  .fix-item{background:var(--bg2);border-left:2px solid var(--amber);
+    border-radius:0 6px 6px 0;padding:8px 12px;margin-bottom:8px;
+    font-size:12px;color:var(--text1);}
+  .err-block{background:var(--bg2);border-left:2px solid var(--red);
+    border-radius:0 6px 6px 0;padding:8px 12px;
+    font-family:var(--mono);font-size:11px;color:var(--red);white-space:pre-wrap;word-break:break-all;}
+  .out-file{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);
+    border:1px solid var(--border);border-radius:6px;padding:5px 10px;
+    font-family:var(--mono);font-size:11px;color:var(--teal);margin:4px;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+  .stat{background:var(--bg1);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+  .stat-val{font-size:26px;font-weight:700;font-family:var(--mono);}
+  .stat-key{font-size:11px;color:var(--text2);margin-top:2px;}
+  .stat.green .stat-val{color:var(--green);}
+  .stat.red .stat-val{color:var(--red);}
+  .stat.amber .stat-val{color:var(--amber);}
+  .stat.blue .stat-val{color:var(--blue);}
+  .run-row{display:grid;grid-template-columns:1fr auto auto auto;gap:12px;
+    align-items:start;padding:10px 0;border-bottom:1px solid var(--border);}
+  .run-row:last-child{border-bottom:none;}
+  .run-name{font-size:12px;font-family:var(--mono);color:var(--blue);}
+  .run-repo{font-size:11px;color:var(--text2);margin-top:2px;}
+  .run-reason{font-size:11px;color:var(--text2);margin-top:3px;
+    font-style:italic;max-width:480px;line-height:1.4;}
+  .run-meta{font-size:11px;color:var(--text2);}
+  .nav{display:flex;align-items:center;gap:10px;padding:12px 24px;
+    background:var(--bg1);border-bottom:1px solid var(--border);margin-bottom:0;}
+  .nav-logo{font-size:14px;font-weight:700;background:linear-gradient(135deg,#a594ff,#2dd4bf);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .nav-links{display:flex;gap:16px;margin-left:auto;}
+  .nav-links a{font-size:12px;color:var(--text1);}
+  @media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr);}
+    .run-row{grid-template-columns:1fr auto;}}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-logo">⬡ OpenClaw</div>
+  <div class="nav-links">
+    <a href="../../index.html">Dashboard</a>
+    <a href="https://github.com" target="_blank">GitHub</a>
+  </div>
+</div>
+<div class="wrap">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+    <h1>dreamgaussian-1779876016</h1>
+    <span class="badge fail">✗ Failed</span>
+    <span class="badge warn" style="font-size:11px;">test</span>
+  </div>
+  <div class="sub">
+    <a href="https://github.com/dreamgaussian/dreamgaussian" target="_blank">dreamgaussian/dreamgaussian</a>
+    · May 27 2026, 10:14 · 14m 12s · $0.42 · A100
+    · 3 fix attempt(s)
+  </div>
+
+  <h2>Reason for Run</h2><div class='card'><div style='font-size:13px;color:var(--text1);line-height:1.7;font-style:italic;'>Manual run — dreamgaussian</div></div>
+
+  <div class="stats">
+    <div class="stat red">
+      <div class="stat-val">✗</div>
+      <div class="stat-key">outcome</div>
+    </div>
+    <div class="stat amber"><div class="stat-val">3</div><div class="stat-key">fixes applied</div></div>
+    <div class="stat blue"><div class="stat-val">14m 12s</div><div class="stat-key">duration</div></div>
+    <div class="stat"><div class="stat-val">$0.42</div><div class="stat-key">RunPod cost</div></div>
+  </div>
+
+  <h2>Repo</h2>
+  <div class="card">
+    <div class="kv"><span class="k">Repo</span>
+      <span class="v"><a href="https://github.com/dreamgaussian/dreamgaussian" target="_blank">dreamgaussian/dreamgaussian</a></span></div>
+    <div class="kv"><span class="k">Stars</span><span class="v">★ 0</span></div>
+    <div class="kv"><span class="k">Input mode</span><span class="v">single</span></div>
+    <div class="kv"><span class="k">Input files</span><span class="v">SG_Stadium.png</span></div>
+  </div>
+
+  <h2>Description</h2>
+  <div class="card">
+    <div style="font-size:13px;color:var(--text1);line-height:1.7;">DreamGaussian (ICLR 2024): Generative Gaussian Splatting for efficient 3D content creation from a single image. Uses score distillation sampling with Zero123 to hallucinate 3D geometry.</div>
+  </div>
+
+  <h2>Auto-detected Config</h2>
+  <div class="card"><div class="kv"><span class="k">Python</span><span class="v">3.10</span></div><div class="kv"><span class="k">CUDA</span><span class="v">12.1</span></div><div class="kv"><span class="k">PyTorch install</span><span class="v">pip install torch==2.1.0+cu121 torchvision==0.16.0+cu121 --e…</span></div><div class="kv"><span class="k">GPU</span><span class="v">A100</span></div><div class="kv"><span class="k">Est. VRAM</span><span class="v">24 GB</span></div><div class="kv"><span class="k">Docker image</span><span class="v">runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04</span></div><div class="kv"><span class="k">Input flag</span><span class="v">input</span></div><div class="kv"><span class="k">Inference cmd</span><span class="v">cd /workspace/dreamgaussian && python process.py /workspace/inputs/SG_Stadium.png --size 256 && python main.py --config configs/image.yaml input=data/SG_Stadium_rgba.png save_path=SG_Stadium && python main2.py --config configs/image.yaml input=data/SG_Stadium_rgba.png save_path=SG_Stadium && cp logs/SG_Stadium_mesh.obj /workspace/outputs/</span></div></div>
+
+  <h2>Output Files</h2>
+  <div class="card" style="padding:12px 16px;"><span style="color:var(--text2);font-size:12px;">No outputs downloaded</span></div>
+
+  <h2>View in 3D</h2>
+  <div class="card" style="padding:12px 16px;">
+    <div style="color:var(--text2);font-size:12px;">No 3D files available for viewing</div>
+  </div>
+
+  <h2>Auto-fix Log (3 attempt(s))</h2>
+  <div class="card"><div class="fix-item"><strong>Fix 1:</strong> The install errors occurred because: 1) 'simple-knn' already existed from a previous failed run and was not empty, causing 'git clone' to fail. Fixed by removing the stale directory before cloning. 2) 'nvdiffrast' failed to compile due to missing system dependencies. The CUDA toolkit and build tools were already present, but the error was due to missing 'ninja' or 'cuda.h'? Actually, the error 'Cannot compile' often occurs if the system lacks required headers or if there's a conflict. Since the user reported that PyTorch and CUDA are available, and the nvdiffrast install is from source via pip, a retry with a clean environment often works. However, the simplest fix is to ensure that all dependencies are met by removing stale clones and retrying. The inference command was missing a 'cd' to the repo directory, causing file not found errors. Fixed by adding 'cd /workspace/dreamgaussian' at the start.</div><div class="fix-item"><strong>Fix 2:</strong> The original install steps failed because: (1) 'git clone https://github.com/ashawkey/simple-knn' required a username (GitHub no longer supports password-based HTTPS cloning without personal access tokens); fixed by using 'pip install git+https://...' which does not prompt for credentials. (2) nvdiffrast compilation failed likely due to missing CUDA dependencies or build tools; fixed by ensuring the package is installed via pip with proper error handling. The inference command itself is correct, but the install steps needed to be updated to avoid manual git cloning with credential prompts and to handle nvdiffrast's build requirements. Additionally, git-lfs is installed to handle any LFS files in the repositories.</div><div class="fix-item"><strong>Fix 3:</strong> The original install steps had an invalid variable `GIT_TERMINAL_PROMPT=0` and two errors: simple-knn installation failed due to GitHub authentication (but the actual issue was permission), and nvdiffrast compilation failed because no CUDA toolkit was installed. The fix: removed the unnecessary `GIT_TERMINAL_PROMPT=0` env variable, added `conda install -y cuda-toolkit` to provide the CUDA compiler needed for nvdiffrast, and left the rest as-is. Inference command unchanged.</div></div>
+
+  
+    <h2>Error Log</h2>
+    <div class="card">
+      <div class="err-block">Install errors:
+SSH command failed:
+Warning: Permanently added '[38.128.232.232]:45228' (ED25519) to the list of known hosts.
+Cloning into 'diff-gaussian-rasterization'...
+Submodule 'third_party/glm' (https://github.com/g-truc/glm.git) registered for path 'third_party/glm'
+Cloning into '/workspace/dreamgaussian/diff-gaussian-rasterization/third_party/glm'...
+Connection to 38.128.232.232 closed by remote host.
+
+SSH command failed:
+ssh: connect to host 38.128.232.232 port 45228: Connection refused
+
+SSH command failed:
+ssh: connect to host 38.128.232.232 port 45228: Connection refused
+
+SSH command failed:
+ssh: connect to host 38.128.232.232 port 45228: Connection refused
+
+SSH command failed:
+ssh: connect to host 38.128.232.232 port 45228: Connection refused
+
+SSH command failed:
+ssh: connect to host 38.128.232.232 port 45228: Connection refused
+
+SSH command failed:
+ssh: connect to host 38.128.232.232 port 45228: Connection refused
+
+
+Command '['scp', '-i', '/tmp/tmpbgi_n950/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '45228', '-r', 'root@38.128.232.232:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/dreamgaussian-1779876016/']' returned non-zero exit status 255.</div>
+    </div>
+
+  <div style="display:flex;justify-content:space-between;margin-top:24px;font-size:12px;">
+    <a href="../dreamgaussian-1779875994/index.html">← dreamgaussian-1779875994</a><span></span>
+  </div>
+</div>
+</body></html>
