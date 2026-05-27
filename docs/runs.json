@@ -1,5 +1,58 @@
 [
   {
+    "job_name": "dreamgaussian-1779876922",
+    "repo_full_name": "dreamgaussian/dreamgaussian",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 309,
+    "fix_attempts": 0,
+    "fix_summaries": [],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch==2.1.0+cu121 torchvision==0.16.0+cu121 --extra-index-url https://download.pytorch.org/whl/cu121",
+      "needs_h100": false,
+      "estimated_vram_gb": 24,
+      "install_steps": [
+        "pip install -r requirements.txt",
+        "git clone --recursive https://github.com/ashawkey/diff-gaussian-rasterization && pip install ./diff-gaussian-rasterization",
+        "pip install ./simple-knn",
+        "pip install git+https://github.com/NVlabs/nvdiffrast/",
+        "pip install git+https://github.com/ashawkey/kiuikit",
+        "pip install git+https://github.com/bytedance/MVDream",
+        "pip install git+https://github.com/bytedance/ImageDream/#subdirectory=extern/ImageDream"
+      ],
+      "input_flag": "--image",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "python gradio_app.py --image /workspace/inputs --output /workspace/outputs",
+      "output_formats": [
+        "ply",
+        "obj"
+      ],
+      "notes": "The user provided a single image as input. The repo expects a preprocessed RGBA image (256x256) for image-to-3D. The `process.py` script handles background removal and resizing. The primary command is `main.py` for the Gaussian stage and `main2.py` for the mesh stage, but a Gradio demo is also available with `gradio_app.py`. The inference command assumes a single image input; for batch processing or text-to-3D, different commands would be required (see README). The repo requires a modified diff-gaussian-rasterization built from source.",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "Pod did not become ready in time",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/dreamgaussian-1779876922",
+    "cost_usd": 0.154,
+    "variant": "test",
+    "reason": "dreamgaussian test",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-05-27T10:20:32.747477+00:00",
+    "timestamp_human": "May 27 2026, 10:20"
+  },
+  {
     "job_name": "dreamgaussian-1779876016",
     "repo_full_name": "dreamgaussian/dreamgaussian",
     "repo_url": "",
