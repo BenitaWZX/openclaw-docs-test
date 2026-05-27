@@ -80,8 +80,8 @@
   </div>
   <div class="sub">
     <a href="https://github.com/TencentARC/Pixal3D" target="_blank">TencentARC/Pixal3D</a>
-    · May 27 2026, 14:04 · 3m 0s · $0.09 · A100 80GB PCIe
-    · 0 fix attempt(s)
+    · May 27 2026, 14:11 · 3m 0s · $0.09 · A100 80GB PCIe
+    · 3 fix attempt(s)
   </div>
 
   <h2>Reason for Run</h2><div class='card'><div style='font-size:13px;color:var(--text1);line-height:1.7;font-style:italic;'>Manual run — Pixal3D paper branch</div></div>
@@ -91,7 +91,7 @@
       <div class="stat-val">✓</div>
       <div class="stat-key">outcome</div>
     </div>
-    <div class="stat amber"><div class="stat-val">0</div><div class="stat-key">fixes applied</div></div>
+    <div class="stat amber"><div class="stat-val">3</div><div class="stat-key">fixes applied</div></div>
     <div class="stat blue"><div class="stat-val">3m 0s</div><div class="stat-key">duration</div></div>
     <div class="stat"><div class="stat-val">$0.09</div><div class="stat-key">RunPod cost</div></div>
   </div>
@@ -111,39 +111,23 @@
   </div>
 
   <h2>Auto-detected Config</h2>
-  <div class="card"><div class="kv"><span class="k">Python</span><span class="v">—</span></div><div class="kv"><span class="k">CUDA</span><span class="v">—</span></div><div class="kv"><span class="k">PyTorch install</span><span class="v">—…</span></div><div class="kv"><span class="k">GPU</span><span class="v">A100 80GB PCIe</span></div><div class="kv"><span class="k">Est. VRAM</span><span class="v">? GB</span></div><div class="kv"><span class="k">Docker image</span><span class="v">—</span></div><div class="kv"><span class="k">Input flag</span><span class="v">—</span></div><div class="kv"><span class="k">Inference cmd</span><span class="v">—</span></div></div>
+  <div class="card"><div class="kv"><span class="k">Python</span><span class="v">3.11</span></div><div class="kv"><span class="k">CUDA</span><span class="v">12.4</span></div><div class="kv"><span class="k">PyTorch install</span><span class="v">pip install torch==2.5.1…</span></div><div class="kv"><span class="k">GPU</span><span class="v">A100 80GB PCIe</span></div><div class="kv"><span class="k">Est. VRAM</span><span class="v">24 GB</span></div><div class="kv"><span class="k">Docker image</span><span class="v">runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel</span></div><div class="kv"><span class="k">Input flag</span><span class="v">--image</span></div><div class="kv"><span class="k">Inference cmd</span><span class="v">python inference.py --image input.png --output output.glb</span></div></div>
 
   <h2>Output Files</h2>
   <div class="card" style="padding:12px 16px;"><span class="out-file">⬡ GLB · SG_Stadium.glb</span></div>
 
   <h2>View in 3D</h2>
   <div class="card" style="padding:12px 16px;">
-    <a href="https://antimatter15.github.io/splat/?url=https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/SG_Stadium.glb" target="_blank" style="display:inline-block;background:var(--accent);color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;text-decoration:none;margin:4px;">👁 View SG_Stadium.glb</a> 
+    <a href="https://antimatter15.github.io/splat/?url=https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/SG_Stadium.glb" target="_blank" style="display:inline-block;background:var(--accent);color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;text-decoration:none;margin:4px;">👁 View SG_Stadium.glb</a> <a href="https://raw.githubusercontent.com/BenitaWZX.github.io/openclaw-docs-test/raw/main/docs/models/SG_Stadium/SG_Stadium.glb" download style="display:inline-block;background:var(--green);color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;text-decoration:none;margin:4px;">⬇ Download SG_Stadium.glb</a> 
   </div>
 
-  <h2>Auto-fix Log (0 attempt(s))</h2>
-  <div class="card"><div style="color:var(--text2);font-size:12px;">No fixes needed</div></div>
+  <h2>Auto-fix Log (3 attempt(s))</h2>
+  <div class="card"><div class="fix-item"><strong>Fix 1:</strong> Installed cmake + libsparsehash-dev for CUDA kernel compilation</div><div class="fix-item"><strong>Fix 2:</strong> Patched natten version check (2.7→2.5) & removed hardcoded cutlass-fna backend</div><div class="fix-item"><strong>Fix 3:</strong> Built natten from source with CUTLASS submodule for proper CUDA support</div></div>
 
   
 
   <div style="display:flex;justify-content:space-between;margin-top:24px;font-size:12px;">
-    <a href="../dreamgaussian-1779876922/index.html">← dreamgaussian-1779876922</a><span></span>
+    <a href="../Pixal3D-SG-Stadium/index.html">← Pixal3D-SG-Stadium</a><span></span>
   </div>
-
-<div class="card">
-  <h3>Download 3D Model</h3>
-  <p style="font-size:12px;color:var(--text1);margin-bottom:12px;">
-    Generated from SG_Stadium.png using Pixal3D (paper branch)
-  </p>
-  <a href="https://github.com/BenitaWZX/openclaw-docs-test/raw/main/docs/models/SG_Stadium/SG_Stadium.glb"
-     download
-     style="display:inline-block;background:var(--accent);color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
-    ⬇ Download SG_Stadium.glb (13.7 MB)
-  </a>
-  <p style="font-size:11px;color:var(--text2);margin-top:8px;">
-    381,567 vertices · 763,566 faces · GLB format
-  </p>
-</div>
-
 </div>
 </body></html>
