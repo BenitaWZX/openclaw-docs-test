@@ -1,5 +1,55 @@
 [
   {
+    "job_name": "Hunyuan3D-2-1779873398",
+    "repo_full_name": "Tencent-Hunyuan/Hunyuan3D-2",
+    "repo_url": "https://github.com/Tencent-Hunyuan/Hunyuan3D-2",
+    "repo_stars": 13831,
+    "input_files": [
+      "/home/ubuntu/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 184,
+    "fix_attempts": 0,
+    "fix_summaries": [],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch==2.1.0+cu121 torchvision==0.16.0+cu121 --extra-index-url https://download.pytorch.org/whl/cu121",
+      "needs_h100": false,
+      "estimated_vram_gb": 24,
+      "install_steps": [
+        "git clone https://github.com/Tencent-Hunyuan/Hunyuan3D-2.git",
+        "cd Hunyuan3D-2",
+        "pip install -r requirements.txt",
+        "huggingface-cli download tencent/Hunyuan3D-2 --resume-download --local-dir ./hf_models"
+      ],
+      "input_flag": "--images",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "cd /workspace/Hunyuan3D-2 && python run.py --images /workspace/inputs --output /workspace/outputs",
+      "output_formats": [
+        "ply",
+        "obj"
+      ],
+      "notes": "Requires manual download of Hugging Face model weights (tencent/Hunyuan3D-2). The repo's 'run.py' may need the user to set a flag for device selection (e.g. --gpu). Adjust accordingly if using a single GPU pod.",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "SSH command failed:\nWarning: Permanently added '[195.26.233.9]:25722' (ED25519) to the list of known hosts.\n\u001b[33mWarning: `huggingface-cli` is deprecated and no longer works. Use `hf` instead.\n\u001b[0m\n\u001b[90mHint: `hf` is already installed! Use it directly.\n\u001b[0m\n\u001b[90mHint: Examples:\n  hf auth login\n  hf download unsloth/gemma-4-31B-it-GGUF\n  hf upload my-cool-model . .\n  hf models ls --search \"gemma\"\n  hf repos ls --format json\n  hf jobs run python:3.12 python -c 'print(\"Hello!\")'\n  hf --help\n\u001b[0m",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/Hunyuan3D-2-1779873398",
+    "cost_usd": 0.091,
+    "variant": "test",
+    "reason": "Manual run by b \u2014 SG Stadium test",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-05-27T09:19:42.583045+00:00",
+    "timestamp_human": "May 27 2026, 09:19"
+  },
+  {
     "job_name": "Hunyuan3D-2-1779873183",
     "repo_full_name": "Tencent-Hunyuan/Hunyuan3D-2",
     "repo_url": "https://github.com/Tencent-Hunyuan/Hunyuan3D-2",
