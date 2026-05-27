@@ -1,5 +1,61 @@
 [
   {
+    "job_name": "Pixal3D-1779875630",
+    "repo_full_name": "TencentARC/Pixal3D",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 301,
+    "fix_attempts": 2,
+    "fix_summaries": [
+      "1. The clone failed because '/workspace/Pixal3D' already existed from a previous attempt (non-empty). Fixed by removing the directory first with 'rm -rf /workspace/Pixal3D || true' before cloning.\n2. The original error trace shows a 'torch functional' import failure inside 'nearest_neighbors.py', indicating a missing or broken PyTorch dependency. The error occurred deep inside the native 'torch' library, most likely due to a compiler/library mismatch (e.g., missing Open3D or its torch dependency). I added 'pip install open3d==0.19.0' to ensure the properly versioned open3d and its torch extension are present. This resolves the native extension load failure for torch's functional module.",
+      "The previous install steps used 'cd /workspace/Pixal3D' which failed because the directory didn't exist at the start. Fixed by first creating the /workspace/Pixal3D directory with mkdir, then cloning into it. Also removed relative cd commands since the pipeline does not guarantee a working directory; instead, used full paths for pip installs and the inference command."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch==2.1.0+cu121 torchvision==0.16.0+cu121 --extra-index-url https://download.pytorch.org/whl/cu121",
+      "needs_h100": false,
+      "estimated_vram_gb": 24,
+      "install_steps": [
+        "mkdir -p /workspace/Pixal3D",
+        "git clone https://github.com/TencentARC/Pixal3D.git -b main /workspace/Pixal3D",
+        "pip install -r /workspace/Pixal3D/requirements.txt",
+        "NATTEN_CUDA_ARCH='90a' NATTEN_N_WORKERS=8 pip install natten==0.21.0 --no-build-isolation",
+        "pip install https://github.com/LDYang694/Storages/releases/download/20260430/utils3d-0.0.2-py3-none-any.whl",
+        "mkdir -p /workspace/inputs /workspace/outputs",
+        "huggingface-cli download TencentARC/Pixal3D --local-dir /workspace/Pixal3D/pretrained",
+        "pip install open3d==0.19.0"
+      ],
+      "input_flag": "--image",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "python /workspace/Pixal3D/inference.py --image /workspace/inputs/SG_Stadium.png --output /workspace/outputs/output.glb",
+      "output_formats": [
+        "glb"
+      ],
+      "notes": "Repo uses Natten (needs CUDA arch for H100:90a). Default resolution is 1536; add --low_vram for 24GB GPUs. Model weights auto-download or use huggingface-cli. Output is a single GLB file.",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "Install errors:\nSSH command failed:\nWarning: Permanently added '[195.26.233.96]:42533' (ED25519) to the list of known hosts.\nbash: line 1: cd: /workspace/Pixal3D: No such file or directory\n\nSSH command failed:\nWarning: Permanently added '[195.26.233.96]:42533' (ED25519) to the list of known hosts.\nbash: line 1: cd: /workspace/Pixal3D: No such file or directory\n\nSSH command failed:\nWarning: Permanently added '[195.26.233.96]:42533' (ED25519) to the list of known hosts.\nbash: line 1: cd: /workspace/Pixal3D: No such file or directory\n\nSSH command failed:\nWarning: Permanently added '[195.26.233.96]:42533' (ED25519) to the list of known hosts.\nbash: line 1: cd: /workspace/Pixal3D: No such file or directory\n\nSSH command failed:\nWarning: Permanently added '[195.26.233.96]:42533' (ED25519) to the list of known hosts.\nbash: line 1: cd: /workspace/Pixal3D: No such file or directory\n\nSSH command failed:\nWarning: Permanently added '[195.26.233.96]:42533' (ED25519) to the list of known hosts.\nbash: line 1: cd: /workspace/Pixal3D: No such file or directory\n\nSSH command failed:\nWarning: Permanently added '[195.26.233.96]:42533' (ED25519) to the list of known hosts.\nbash: line 1: cd: /workspace/Pixal3D: No such file or directory\n\n\nCommand '['scp', '-i', '/tmp/tmp_a1cee1k/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '42533', '-r', '/home/ubuntu/SG_Stadium.png', 'root@195.26.233.96:/workspace/inputs/']' returned non-zero exit status 255.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/Pixal3D-1779875630",
+    "cost_usd": 0.15,
+    "variant": "test",
+    "reason": "Manual run by b \u2014 SG Stadium test",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-05-27T09:58:51.951094+00:00",
+    "timestamp_human": "May 27 2026, 09:58"
+  },
+  {
     "job_name": "Hunyuan3D-2-1779874897",
     "repo_full_name": "Tencent-Hunyuan/Hunyuan3D-2",
     "repo_url": "https://github.com/Tencent-Hunyuan/Hunyuan3D-2",
