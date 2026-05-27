@@ -1,5 +1,27 @@
 [
   {
+    "job_name": "Pixal3D-SG-Stadium",
+    "repo_full_name": "TencentARC/Pixal3D",
+    "repo_url": "https://github.com/TencentARC/Pixal3D",
+    "repo_stars": 1517,
+    "variant": "test",
+    "success": true,
+    "gpu_type": "A100 80GB PCIe",
+    "duration_sec": 180,
+    "cost_usd": 0.09,
+    "input_files": [
+      "SG_Stadium.png"
+    ],
+    "reason": "Manual run \u2014 Pixal3D paper branch",
+    "output_files": [
+      "SG_Stadium.glb"
+    ],
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-05-27T14:04:55.506434+00:00",
+    "timestamp_human": "May 27 2026, 14:04"
+  },
+  {
     "job_name": "dreamgaussian-1779876922",
     "repo_full_name": "dreamgaussian/dreamgaussian",
     "repo_url": "",
