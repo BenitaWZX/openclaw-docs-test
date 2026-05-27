@@ -1,0 +1,49 @@
+[
+  {
+    "job_name": "TripoSR-1779870969",
+    "repo_full_name": "VAST-AI-Research/TripoSR",
+    "repo_url": "https://github.com/VAST-AI-Research/TripoSR",
+    "repo_stars": 6539,
+    "input_files": [
+      "/home/ubuntu/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 0,
+    "fix_attempts": 0,
+    "fix_summaries": [],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch==2.1.0+cu121 torchvision==0.16.0+cu121 --extra-index-url https://download.pytorch.org/whl/cu121",
+      "needs_h100": false,
+      "estimated_vram_gb": 6,
+      "install_steps": [
+        "pip install -r requirements.txt"
+      ],
+      "input_flag": "",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "python run.py /workspace/inputs/SG_Stadium.png --output-dir /workspace/outputs",
+      "output_formats": [
+        "ply",
+        "obj"
+      ],
+      "notes": "default uses ~6GB VRAM; use --bake-texture for textured output; torchmcubes may need manual rebuild if CUDA mismatch",
+      "docker_image": "runpod/pytorch:2.1.0-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "HTTP Error 403: Forbidden",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/TripoSR-1779870969",
+    "cost_usd": 0.0,
+    "variant": "test",
+    "reason": "Manual run by b \u2014 SG Stadium test",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-05-27T08:36:10.051381+00:00",
+    "timestamp_human": "May 27 2026, 08:36"
+  }
+]
