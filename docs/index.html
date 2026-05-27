@@ -1,1 +1,195 @@
-<h1>OpenClaw Docs</h1>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Reproducible OpenSource Image-to-3D Research</title>
+<style>
+  :root{--bg:#0d0d12;--bg1:#13131a;--bg2:#1a1a24;--border:#2a2a3a;
+    --text:#e8e8f8;--text1:#a0a0c0;--text2:#606080;
+    --accent:#7c6af7;--green:#4ade80;--red:#f87171;--amber:#fbbf24;--blue:#60a5fa;--teal:#2dd4bf;
+    --mono:'SF Mono','Fira Code',monospace;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:14px;line-height:1.6;padding:0;}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 24px;}
+  h1{font-size:22px;font-weight:700;letter-spacing:-0.3px;margin-bottom:4px;}
+  h2{font-size:15px;font-weight:600;color:var(--text1);margin:24px 0 10px;}
+  h3{font-size:13px;font-weight:600;color:var(--text1);margin:0 0 8px;}
+  a{color:var(--blue);text-decoration:none;}a:hover{text-decoration:underline;}
+  .sub{font-size:12px;color:var(--text2);margin-bottom:28px;}
+  .card{background:var(--bg1);border:1px solid var(--border);border-radius:10px;
+    padding:16px 20px;margin-bottom:12px;}
+  .badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+    padding:2px 10px;border-radius:99px;}
+  .badge.ok{background:rgba(74,222,128,0.12);color:var(--green);}
+  .badge.fail{background:rgba(248,113,113,0.12);color:var(--red);}
+  .badge.warn{background:rgba(251,191,36,0.12);color:var(--amber);}
+  .kv{display:flex;align-items:center;justify-content:space-between;
+    font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);}
+  .kv:last-child{border-bottom:none;}
+  .kv .k{color:var(--text2);}
+  .kv .v{font-family:var(--mono);color:var(--teal);font-size:11px;}
+  .fix-item{background:var(--bg2);border-left:2px solid var(--amber);
+    border-radius:0 6px 6px 0;padding:8px 12px;margin-bottom:8px;
+    font-size:12px;color:var(--text1);}
+  .err-block{background:var(--bg2);border-left:2px solid var(--red);
+    border-radius:0 6px 6px 0;padding:8px 12px;
+    font-family:var(--mono);font-size:11px;color:var(--red);white-space:pre-wrap;word-break:break-all;}
+  .out-file{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);
+    border:1px solid var(--border);border-radius:6px;padding:5px 10px;
+    font-family:var(--mono);font-size:11px;color:var(--teal);margin:4px;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+  .stat{background:var(--bg1);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+  .stat-val{font-size:26px;font-weight:700;font-family:var(--mono);}
+  .stat-key{font-size:11px;color:var(--text2);margin-top:2px;}
+  .stat.green .stat-val{color:var(--green);}
+  .stat.red .stat-val{color:var(--red);}
+  .stat.amber .stat-val{color:var(--amber);}
+  .stat.blue .stat-val{color:var(--blue);}
+  .run-row{display:grid;grid-template-columns:1fr auto auto auto;gap:12px;
+    align-items:start;padding:10px 0;border-bottom:1px solid var(--border);}
+  .run-row:last-child{border-bottom:none;}
+  .run-name{font-size:12px;font-family:var(--mono);color:var(--blue);}
+  .run-repo{font-size:11px;color:var(--text2);margin-top:2px;}
+  .run-reason{font-size:11px;color:var(--text2);margin-top:3px;
+    font-style:italic;max-width:480px;line-height:1.4;}
+  .run-meta{font-size:11px;color:var(--text2);}
+  .nav{display:flex;align-items:center;gap:10px;padding:12px 24px;
+    background:var(--bg1);border-bottom:1px solid var(--border);margin-bottom:0;}
+  .nav-logo{font-size:14px;font-weight:700;background:linear-gradient(135deg,#a594ff,#2dd4bf);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .nav-links{display:flex;gap:16px;margin-left:auto;}
+  .nav-links a{font-size:12px;color:var(--text1);}
+  @media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr);}
+    .run-row{grid-template-columns:1fr auto;}}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-logo">⬡ OpenClaw</div>
+  <div class="nav-links">
+    <a href="index.html">Dashboard</a>
+    <a href="https://github.com" target="_blank">GitHub</a>
+  </div>
+</div>
+<div class="wrap">
+  <h1>Reproducible OpenSource Image-to-3D Research</h1>
+  <div class="sub">Auto-generated docs · 10 runs logged · Last updated May 27 2026 09:28</div>
+  <div style="margin-bottom:20px;font-size:12px;color:var(--text1);">
+    📦 Models: <a href="https://huggingface.co/datasets/Bwzx/3d-reconstructions" target="_blank">Hugging Face</a>
+    &nbsp;·&nbsp; <a href="https://github.com/BenitaWZX/3d_tech_scan_docs/tree/main/models" target="_blank">GitHub</a>
+  </div>
+
+  <div class="stats">
+    <div class="stat blue"><div class="stat-val">10</div><div class="stat-key">total runs</div></div>
+    <div class="stat green"><div class="stat-val">2</div><div class="stat-key">successful</div></div>
+    <div class="stat red"><div class="stat-val">8</div><div class="stat-key">failed</div></div>
+    <div class="stat amber"><div class="stat-val">$0.72</div><div class="stat-key">total spent</div></div>
+  </div>
+
+  <div class="card">
+    <h3>Run History</h3>
+    
+        <div class="run-row">
+          <div>
+            <div class="run-name"><a href="runs/Hunyuan3D-2-1779873628/index.html">Hunyuan3D-2-1779873628</a> <span class="badge warn" style="font-size:10px;padding:1px 7px;">test</span></div>
+            <div class="run-repo">Tencent-Hunyuan/Hunyuan3D-2 · A100 · May 27 2026, 09:28</div>
+            <div class="run-reason" title="Manual run by b — SG Stadium test">Manual run by b — SG Stadium test</div>
+          </div>
+          <div class="run-meta">2m 48s</div>
+          <div class="run-meta">$0.08</div>
+          <span class="badge ok">✓ success</span>
+        </div>
+        <div class="run-row">
+          <div>
+            <div class="run-name"><a href="runs/Hunyuan3D-2-1779873628/index.html">Hunyuan3D-2-1779873628</a> <span class="badge warn" style="font-size:10px;padding:1px 7px;">test</span></div>
+            <div class="run-repo">Tencent-Hunyuan/Hunyuan3D-2 · A100 · May 27 2026, 09:23</div>
+            <div class="run-reason" title="Manual run by b — SG Stadium test">Manual run by b — SG Stadium test</div>
+          </div>
+          <div class="run-meta">2m 48s</div>
+          <div class="run-meta">$0.08</div>
+          <span class="badge ok">✓ success</span>
+        </div>
+        <div class="run-row">
+          <div>
+            <div class="run-name"><a href="runs/Hunyuan3D-2-1779873398/index.html">Hunyuan3D-2-1779873398</a> <span class="badge warn" style="font-size:10px;padding:1px 7px;">test</span></div>
+            <div class="run-repo">Tencent-Hunyuan/Hunyuan3D-2 · A100 · May 27 2026, 09:19</div>
+            <div class="run-reason" title="Manual run by b — SG Stadium test">Manual run by b — SG Stadium test</div>
+          </div>
+          <div class="run-meta">3m 4s</div>
+          <div class="run-meta">$0.09</div>
+          <span class="badge fail">✗ failed</span>
+        </div>
+        <div class="run-row">
+          <div>
+            <div class="run-name"><a href="runs/Hunyuan3D-2-1779873183/index.html">Hunyuan3D-2-1779873183</a> <span class="badge warn" style="font-size:10px;padding:1px 7px;">test</span></div>
+            <div class="run-repo">Tencent-Hunyuan/Hunyuan3D-2 · A100 · May 27 2026, 09:15</div>
+            <div class="run-reason" title="Manual run by b — SG Stadium test">Manual run by b — SG Stadium test</div>
+          </div>
+          <div class="run-meta">2m 40s</div>
+          <div class="run-meta">$0.08</div>
+          <span class="badge fail">✗ failed</span>
+        </div>
+        <div class="run-row">
+          <div>
+            <div class="run-name"><a href="runs/Hunyuan3D-2-1779872440/index.html">Hunyuan3D-2-1779872440</a> <span class="badge warn" style="font-size:10px;padding:1px 7px;">test</span></div>
+            <div class="run-repo">Tencent-Hunyuan/Hunyuan3D-2 · A100 · May 27 2026, 09:05</div>
+            <div class="run-reason" title="Manual run by b — SG Stadium test">Manual run by b — SG Stadium test</div>
+          </div>
+          <div class="run-meta">5m 12s</div>
+          <div class="run-meta">$0.15</div>
+          <span class="badge fail">✗ failed</span>
+        </div>
+        <div class="run-row">
+          <div>
+            <div class="run-name"><a href="runs/Hunyuan3D-2-1779871973/index.html">Hunyuan3D-2-1779871973</a> <span class="badge warn" style="font-size:10px;padding:1px 7px;">test</span></div>
+            <div class="run-repo">Tencent-Hunyuan/Hunyuan3D-2 · A100 · May 27 2026, 08:55</div>
+            <div class="run-reason" title="Manual run by b — SG Stadium test">Manual run by b — SG Stadium test</div>
+          </div>
+          <div class="run-meta">2m 24s</div>
+          <div class="run-meta">$0.07</div>
+          <span class="badge fail">✗ failed</span>
+        </div>
+        <div class="run-row">
+          <div>
+            <div class="run-name"><a href="runs/TripoSR-1779871341/index.html">TripoSR-1779871341</a> <span class="badge warn" style="font-size:10px;padding:1px 7px;">test</span></div>
+            <div class="run-repo">VAST-AI-Research/TripoSR · A100 · May 27 2026, 08:47</div>
+            <div class="run-reason" title="Manual run by b — SG Stadium test">Manual run by b — SG Stadium test</div>
+          </div>
+          <div class="run-meta">5m 10s</div>
+          <div class="run-meta">$0.15</div>
+          <span class="badge fail">✗ failed</span>
+        </div>
+        <div class="run-row">
+          <div>
+            <div class="run-name"><a href="runs/TripoSR-1779871126/index.html">TripoSR-1779871126</a> <span class="badge warn" style="font-size:10px;padding:1px 7px;">test</span></div>
+            <div class="run-repo">VAST-AI-Research/TripoSR · A100 · May 27 2026, 08:38</div>
+            <div class="run-reason" title="Manual run by b — SG Stadium test">Manual run by b — SG Stadium test</div>
+          </div>
+          <div class="run-meta">0m 2s</div>
+          <div class="run-meta">$0.00</div>
+          <span class="badge fail">✗ failed</span>
+        </div>
+        <div class="run-row">
+          <div>
+            <div class="run-name"><a href="runs/TripoSR-1779871038/index.html">TripoSR-1779871038</a> <span class="badge warn" style="font-size:10px;padding:1px 7px;">test</span></div>
+            <div class="run-repo">VAST-AI-Research/TripoSR · A100 · May 27 2026, 08:37</div>
+            <div class="run-reason" title="Manual run by b — SG Stadium test">Manual run by b — SG Stadium test</div>
+          </div>
+          <div class="run-meta">0m 2s</div>
+          <div class="run-meta">$0.00</div>
+          <span class="badge fail">✗ failed</span>
+        </div>
+        <div class="run-row">
+          <div>
+            <div class="run-name"><a href="runs/TripoSR-1779870969/index.html">TripoSR-1779870969</a> <span class="badge warn" style="font-size:10px;padding:1px 7px;">test</span></div>
+            <div class="run-repo">VAST-AI-Research/TripoSR · A100 · May 27 2026, 08:36</div>
+            <div class="run-reason" title="Manual run by b — SG Stadium test">Manual run by b — SG Stadium test</div>
+          </div>
+          <div class="run-meta">0m 0s</div>
+          <div class="run-meta">$0.00</div>
+          <span class="badge fail">✗ failed</span>
+        </div>
+  </div>
+</div>
+</body></html>
