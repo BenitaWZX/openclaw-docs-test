@@ -34,6 +34,44 @@
       "inference_cmd": "python inference.py --image input.png --output output.glb"
     },
     "hf_dataset": "Bwzx/3d-reconstructions",
+    "timestamp": "2026-05-27T14:21:57.666471+00:00",
+    "timestamp_human": "May 27 2026, 14:21"
+  },
+  {
+    "job_name": "Pixal3D-SG-Stadium",
+    "repo_full_name": "TencentARC/Pixal3D",
+    "repo_url": "https://github.com/TencentARC/Pixal3D",
+    "repo_stars": 1517,
+    "variant": "test",
+    "success": true,
+    "gpu_type": "A100 80GB PCIe",
+    "duration_sec": 180,
+    "cost_usd": 0.09,
+    "input_files": [
+      "SG_Stadium.png"
+    ],
+    "reason": "Manual run \u2014 Pixal3D paper branch",
+    "output_files": [
+      "SG_Stadium.glb"
+    ],
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "Installed cmake + libsparsehash-dev for CUDA kernel compilation",
+      "Patched natten version check (2.7 to 2.5) and removed hardcoded cutlass-fna backend",
+      "Built natten from source with CUTLASS submodule for proper CUDA support"
+    ],
+    "cfg": {
+      "python_version": "3.11",
+      "cuda_version": "12.4",
+      "pytorch_install": "pip install torch==2.5.1",
+      "docker_image": "runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel",
+      "estimated_vram_gb": 24,
+      "input_flag": "--image",
+      "inference_cmd": "python inference.py --image input.png --output output.glb"
+    },
+    "hf_dataset": "Bwzx/3d-reconstructions",
     "timestamp": "2026-05-27T14:21:08.155189+00:00",
     "timestamp_human": "May 27 2026, 14:21"
   },
