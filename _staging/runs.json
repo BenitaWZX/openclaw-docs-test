@@ -1,5 +1,58 @@
 [
   {
+    "job_name": "Hunyuan3D-2-1779874570",
+    "repo_full_name": "Tencent-Hunyuan/Hunyuan3D-2",
+    "repo_url": "https://github.com/Tencent-Hunyuan/Hunyuan3D-2",
+    "repo_stars": 13832,
+    "input_files": [
+      "/home/ubuntu/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 245,
+    "fix_attempts": 2,
+    "fix_summaries": [
+      "The original inference command started with a 'cd' command, which is a shell built-in, not an executable script. The RunPod task runner expects the inference command to be a single executable or script, not a shell command with 'cd'. The fix sets the working directory to /workspace/Hunyuan3D-2 via the install steps (by adding a 'cd' before pip install) and uses a direct Python invocation for the inference command.",
+      "The original installation steps assumed the repository was already cloned at /workspace/Hunyuan3D-2, but the directory didn't exist, causing 'No such file or directory' error. Added a git clone step to download the repository, then install requirements and install the package in editable mode for dependency resolution. The inference command is unchanged."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch==2.1.0+cu121 torchvision==0.16.0+cu121 --extra-index-url https://download.pytorch.org/whl/cu121",
+      "needs_h100": false,
+      "estimated_vram_gb": 24,
+      "install_steps": [
+        "git clone https://github.com/Tencent-Hunyuan/Hunyuan3D-2.git /workspace/Hunyuan3D-2",
+        "cd /workspace/Hunyuan3D-2",
+        "pip install -r requirements.txt",
+        "pip install -e ."
+      ],
+      "input_flag": "--images",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "python run.py --images /workspace/inputs --output /workspace/outputs",
+      "output_formats": [
+        "ply",
+        "obj"
+      ],
+      "notes": "The repo uses a single-image input. Ensure the input file is placed directly in /workspace/inputs with .png or .jpg extension. The default demo script expects '--images' flag pointing to a folder or single image file.",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "Install errors:\nSSH command failed:\nWarning: Permanently added '[195.26.233.9]:49292' (ED25519) to the list of known hosts.\npython: can't open file '/workspace/Hunyuan3D-2/run.py': [Errno 2] No such file or directory\n\n\nSSH command failed:\nWarning: Permanently added '[195.26.233.9]:49292' (ED25519) to the list of known hosts.\nCloning into 'Hunyuan3D-2'...\nUpdating files:  46% (105/226)\nUpdating files:  47% (107/226)\nUpdating files:  48% (109/226)\nUpdating files:  49% (111/226)\nUpdating files:  50% (113/226)\nUpdating files:  51% (116/226)\nUpdating files:  52% (118/226)\nUpdating files:  53% (120/226)\nUpdating files:  54% (123/226)\nUpdating files:  55% (125/226)\nUpdating files:  56% (127/226)\nUpdating files:  57% (129/226)\nUpdating files:  58% (132/226)\nUpdating files:  59% (134/226)\nUpdating files:  60% (136/226)\nUpdating files:  61% (138/226)\nUpdating files:  61% (140/226)\nUpdating files:  62% (141/226)\nUpdating files:  63% (143/226)\nUpdating files:  64% (145/226)\nUpdating files:  65% (147/226)\nUpdating files:  66% (150/226)\nUpdating files:  67% (152/226)\nUpdating files:  68% (154/226)\nUpdating files:  69% (156/226)\nUpdating files:  70% (159/226)\nUpdating files:  71% (161/226)\nUpdating files:  72% (163/226)\nUpdating files:  73% (165/226)\nUpdating files:  74% (168/226)\nUpdating files:  75% (170/226)\nUpdating files:  76% (172/226)\nUpdating files:  77% (175/226)\nUpdating files:  78% (177/226)\nUpdating files:  79% (179/226)\nUpdating files:  80% (181/226)\nUpdating files:  81% (184/226)\nUpdating files:  82% (186/226)\nUpdating files:  83% (188/226)\nUpdating files:  84% (190/226)\nUpdating files:  85% (193/226)\nUpdating files:  86% (195/226)\nUpdating files:  87% (197/226)\nUpdating files:  88% (199/226)\nUpdating files:  89% (202/226)\nUpdating files:  90% (204/226)\nUpdating files:  91% (206/226)\nUpdating files:  92% (208/226)\nConnection to 195.26.233.9 closed by remote host.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/Hunyuan3D-2-1779874570",
+    "cost_usd": 0.122,
+    "variant": "test",
+    "reason": "Manual run by b \u2014 SG Stadium test",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-05-27T09:40:15.917094+00:00",
+    "timestamp_human": "May 27 2026, 09:40"
+  },
+  {
     "job_name": "Hunyuan3D-2-1779874353",
     "repo_full_name": "Tencent-Hunyuan/Hunyuan3D-2",
     "repo_url": "https://github.com/Tencent-Hunyuan/Hunyuan3D-2",
