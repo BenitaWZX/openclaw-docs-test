@@ -1,5 +1,43 @@
 [
   {
+    "job_name": "Extend3D-SG-Stadium",
+    "repo_full_name": "SNU-VGILab/Extend3D",
+    "repo_url": "https://github.com/SNU-VGILab/Extend3D",
+    "repo_stars": 0,
+    "variant": "test",
+    "success": true,
+    "gpu_type": "A100 80GB PCIe",
+    "duration_sec": 600,
+    "cost_usd": 0.3,
+    "input_files": [
+      "SG_Stadium.png"
+    ],
+    "reason": "Manual run \u2014 followed README with conda py3.10 env",
+    "output_files": [
+      "Extend3D_SG_Stadium.glb",
+      "Extend3D_SG_Stadium.ply"
+    ],
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "fix_attempts": 2,
+    "fix_summaries": [
+      "Created conda python3.10 environment per README to resolve cp310 wheel issues",
+      "Fixed PLY export: gaussian.save_ply() instead of incorrect gaussian.ply()"
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.4",
+      "pytorch_install": "conda create -n extend3d python=3.10 && pip install -r requirements.txt",
+      "docker_image": "runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel + conda env",
+      "estimated_vram_gb": 80,
+      "input_flag": "PIL Image.open",
+      "inference_cmd": "Extend3D.from_pretrained(\"microsoft/TRELLIS-image-large\").cuda()"
+    },
+    "hf_dataset": "Bwzx/3d-reconstructions",
+    "timestamp": "2026-05-28T07:43:53.994117+00:00",
+    "timestamp_human": "May 28 2026, 07:43"
+  },
+  {
     "job_name": "Hunyuan3D-2-SG-Stadium",
     "repo_full_name": "Tencent-Hunyuan/Hunyuan3D-2",
     "repo_url": "https://github.com/Tencent-Hunyuan/Hunyuan3D-2",
