@@ -1,5 +1,63 @@
 [
   {
+    "job_name": "stable-dreamfusion-1779931274",
+    "repo_full_name": "ashawkey/stable-dreamfusion",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/openclaw-inputs/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 4199,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "The install script had three issues: (1) 'nvdiffrast' compilation requires the Ninja build system; added 'pip install ninja' first. (2) The 'taichi-nightly' index URL is incorrect for CUDA environments; replaced with stable 'taichi' which works with CUDA. (3) 'gdown' was missing; added 'pip install gdown' before using it to download omnidata models. The inference command remains unchanged.",
+      "The original build of nvdiffrast failed because the pip installation from the GitHub repo lacked proper CUDA compilation flags and dependencies. By installing nvdiffrast via `pip install git+https://github.com/NVlabs/nvdiffrast.git`, we ensure it fetches the latest commit with proper setup. Additionally, the gdown command failed due to Google Drive link permission issues; using `--fuzzy` and the public shareable URL format allows gdown to bypass the permission check and download the file successfully.",
+      "Two errors were fixed: (1) nvdiffrast compilation failed due to a cached or corrupted build; adding --no-cache-dir forces a fresh download and build. (2) gdown's --fuzzy argument is not recognized in the installed version; removing it and using the direct URL resolves the download."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch==2.1.0+cu121 torchvision==0.16.0+cu121 --extra-index-url https://download.pytorch.org/whl/cu121",
+      "needs_h100": false,
+      "estimated_vram_gb": 24,
+      "install_steps": [
+        "pip install ninja",
+        "pip install -r requirements.txt",
+        "pip install taichi",
+        "pip install git+https://github.com/NVlabs/nvdiffrast.git --no-cache-dir",
+        "pip install gdown",
+        "cd pretrained/zero123 && wget https://zero123.cs.columbia.edu/assets/zero123-xl.ckpt && cd ../..",
+        "mkdir -p pretrained/omnidata && cd pretrained/omnidata && gdown 'https://drive.google.com/uc?id=1Jrh-bRnJEjyMCS7f-WsaFlccfPjJPPHI' && gdown 'https://drive.google.com/uc?id=1wNxVO4vVbDEMEpnAi_jwQObf2MFodcBR' && cd ../..",
+        "mkdir -p /workspace/inputs && mkdir -p /workspace/outputs"
+      ],
+      "input_flag": "--images",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "python main.py --image /workspace/inputs/SG_Stadium.png --workspace /workspace/outputs --O",
+      "output_formats": [
+        "ply",
+        "obj"
+      ],
+      "notes": "Repo uses Stable Diffusion; expects single image for single-image 3D reconstruction via Zero-1-to-3 backend. Default backbone with -O flag uses Instant-NGP. Taichi backend avoids CUDA build. Outputs are in workspace dir.",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "Install errors:\nSSH command failed:\nWarning: Permanently added '[213.173.105.4]:30096' (ED25519) to the list of known hosts.\n  Running command git clone --filter=blob:none --quiet https://github.com/NVlabs/nvdiffrast/ /tmp/pip-req-build-dqyur7j8\n  error: subprocess-exited-with-error\n  \n  \u00d7 Getting requirements to build wheel did not run successfully.\n  \u2502 exit code: 1\n  \u2570\u2500> [10 lines of output]\n      \n      \n      **********************************************************************\n      ERROR! Cannot compile \nSSH command failed:\nWarning: Permanently added '[213.173.105.4]:30096' (ED25519) to the list of known hosts.\n  Running command git clone --filter=blob:none --quiet https://github.com/NVlabs/nvdiffrast.git /tmp/pip-req-build-clk17m1d\n  error: subprocess-exited-with-error\n  \n  \u00d7 Getting requirements to build wheel did not run successfully.\n  \u2502 exit code: 1\n  \u2570\u2500> [10 lines of output]\n      \n      \n      **********************************************************************\n      ERROR! Cannot compi\nSSH command failed:\nWarning: Permanently added '[213.173.105.4]:30096' (ED25519) to the list of known hosts.\nFailed to retrieve file url:\n\n\tCannot retrieve the public link of the file. You may need to change\n\tthe permission to 'Anyone with the link', or have had many accesses.\n\tCheck FAQ in https://github.com/wkentaro/gdown?tab=readme-ov-file#faq.\n\nYou may still be able to access the file from the browser:\n\n\thttps://drive.google.com/uc?id=1Jrh-bRnJEjyMCS7f-WsaFlccfPjJPPHI\n\nbut Gdown can't. Pleas\n\nCommand '['scp', '-i', '/tmp/tmpy8aaar3u/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '30096', '-r', 'root@213.173.105.4:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/stable-dreamfusion-1779931274/']' returned non-zero exit status 1.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/stable-dreamfusion-1779931274",
+    "cost_usd": 2.088,
+    "variant": "test",
+    "reason": "With 8,838 stars and frequent updates through December 2023, this repo demonstrates strong community trust and ongoing development in text-to-3D generation using NeRF and diffusion, making it a solid candidate for immediate integration into your pipeline as a proven, high-interest resource.",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-05-28T02:31:14.501120+00:00",
+    "timestamp_human": "May 28 2026, 02:31"
+  },
+  {
     "job_name": "TRELLIS-1779930582",
     "repo_full_name": "microsoft/TRELLIS",
     "repo_url": "",
