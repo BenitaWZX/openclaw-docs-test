@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>ESRI ArcGIS 3D Tiles BD3M, MapTiles & GLB Models</title>
+
+    <link rel="stylesheet" href="script/main.css" />
+    <script src="script/init.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+      html, body, #viewDiv { padding: 0; margin: 0; height: 100%; width: 100%; }
+
+      #titleDiv {
+        background-color: lightgray; color: black; padding: 5px;
+        position: absolute; z-index: 2; top: 0; right: 0;
+        font-size: 20pt; font-weight: bolder; width: 100%; height: 30px;
+        text-align: center; opacity: 0.75;
+      }
+
+      #optionsDiv {
+        position: absolute; bottom: 17px; width: 100%;
+        padding: 20px 0; z-index: 1; text-align: center;
+      }
+
+      button.nav-btn {
+        background: white; padding: 7px; border: 1px solid #005e95;
+        font-size: 0.9em; margin: 5px; color: #005e95; border-radius: 4px;
+      }
+      button.nav-btn:hover { background: #005e95; color: white; cursor: pointer; }
+
+      /* -- Layer Panel -- */
+      #layerPanel {
+        position: absolute; top: 40px; left: 12px; z-index: 10;
+        width: 280px;
+        background: rgba(15, 15, 20, 0.92);
+        backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+        color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif;
+        font-size: 13px; box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+        overflow: hidden; transition: width 0.3s ease, border-radius 0.3s ease;
+        pointer-events: auto;
+      }
+      #layerPanel.collapsed { width: 40px; border-radius: 20px; }
+      #layerPanel.collapsed #panelBody { display: none; }
+
+      #panelHeader {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 10px 14px; background: rgba(255,255,255,0.04);
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        cursor: pointer; user-select: none;
+      }
+      #panelHeader span {
+        font-weight: 700; font-size: 13px; letter-spacing: 0.5px;
+        text-transform: uppercase; color: #ccc; white-space: nowrap; overflow: hidden;
+      }
+      #layerPanel.collapsed #panelHeader span { opacity: 0; }
+
+      #panelToggleIcon {
+        width: 20px; height: 20px; flex-shrink: 0; transition: transform 0.3s ease;
+      }
+      #layerPanel.collapsed #panelToggleIcon { transform: rotate(180deg); }
+
+      #panelBody {
+        padding: 12px 14px 14px;
+        max-height: calc(100vh - 120px); overflow-y: auto;
+      }
+      #panelBody::-webkit-scrollbar { width: 4px; }
+      #panelBody::-webkit-scrollbar-track { background: transparent; }
+      #panelBody::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
+
+      .layer-section-title {
+        font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+        text-transform: uppercase; color: #6a9fd8; margin: 10px 0 8px;
+        display: flex; align-items: center; gap: 6px;
+      }
+      .layer-section-title:first-child { margin-top: 0; }
+      .layer-section-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
+
+      /* -- Basemap -- */
+      .basemap-item {
+        display: flex; align-items: center; gap: 10px; padding: 5px 8px;
+        border-radius: 6px; cursor: pointer; transition: background 0.15s; margin-bottom: 2px;
+      }
+      .basemap-item:hover { background: rgba(255,255,255,0.06); }
+      .basemap-item.active { background: rgba(106, 159, 216, 0.12); }
+
+      .basemap-thumb {
+        width: 40px; height: 40px; border-radius: 5px; border: 2px solid transparent;
+        flex-shrink: 0; overflow: hidden; position: relative;
+        transition: border-color 0.2s, box-shadow 0.2s; background: #2a2a30;
+      }
+      .basemap-item.active .basemap-thumb { border-color: #6a9fd8; box-shadow: 0 0 8px rgba(106,159,216,0.3); }
+      .basemap-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 3px; }
+      .basemap-thumb .thumb-fallback {
+        position: absolute; inset: 0; display: none;
+        align-items: center; justify-content: center;
+        font-size: 10px; color: #555; text-align: center; line-height: 1.2; padding: 2px;
+      }
+      .basemap-thumb img.hidden + .thumb-fallback { display: flex; }
+      .basemap-label { font-size: 12px; color: #bbb; line-height: 1.2; transition: color 0.15s; }
+      .basemap-item.active .basemap-label { color: #fff; font-weight: 600; }
+      .basemap-sublabel { font-size: 10px; color: #666; margin-top: 1px; }
+
+      /* -- Toggles -- */
+      .toggle-item {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 7px 8px; border-radius: 6px; margin-bottom: 2px; transition: background 0.15s;
+      }
+      .toggle-item:hover { background: rgba(255,255,255,0.04); }
+      .toggle-info { display: flex; flex-direction: column; gap: 1px; }
+      .toggle-name { font-size: 12px; color: #ccc; }
+      .toggle-desc { font-size: 10px; color: #666; }
+
+      .toggle-switch { position: relative; width: 38px; height: 20px; flex-shrink: 0; }
+      .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+      .toggle-slider {
+        position: absolute; cursor: pointer; inset: 0;
+        background: #333; border-radius: 20px; transition: background 0.25s;
+      }
+      .toggle-slider::before {
+        content: ''; position: absolute; height: 14px; width: 14px;
+        left: 3px; bottom: 3px; background: #888; border-radius: 50%;
+        transition: transform 0.25s, background 0.25s;
+      }
+      .toggle-switch input:checked + .toggle-slider { background: rgba(106, 159, 216, 0.35); }
+      .toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); background: #6a9fd8; }
+      .toggle-switch input:focus-visible + .toggle-slider { outline: 2px solid #6a9fd8; outline-offset: 2px; }
+
+      /* -- Opacity row -- */
+      .opacity-row {
+        display: flex; align-items: center; gap: 8px; padding: 2px 8px 4px 36px;
+      }
+      .opacity-row label { font-size: 10px; color: #666; white-space: nowrap; }
+      .opacity-row input[type="range"] {
+        flex: 1; height: 3px; -webkit-appearance: none; appearance: none;
+        background: #333; border-radius: 3px; outline: none;
+      }
+      .opacity-row input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+        background: #6a9fd8; cursor: pointer; border: none;
+      }
+      .opacity-row input[type="range"]::-moz-range-thumb {
+        width: 12px; height: 12px; border-radius: 50%; background: #6a9fd8; cursor: pointer; border: none;
+      }
+      .opacity-val { font-size: 10px; color: #888; min-width: 28px; text-align: right; }
+
+      /* -- 3D Model Controls -- */
+      .model-url-box {
+        background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 4px; padding: 8px 10px; font-family: 'Consolas', monospace;
+        font-size: 11px; color: #6a9fd8; word-break: break-all;
+        margin-bottom: 8px; line-height: 1.4;
+      }
+      .control-row {
+        display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+      }
+      .control-row label { font-size: 11px; color: #aaa; width: 65px; flex-shrink: 0; }
+      .control-row input[type="range"] {
+        flex: 1; height: 3px; -webkit-appearance: none; appearance: none;
+        background: #333; border-radius: 3px; outline: none;
+      }
+      .control-row input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+        background: #6a9fd8; cursor: pointer; border: none;
+      }
+      .control-row input[type="range"]::-moz-range-thumb {
+        width: 12px; height: 12px; border-radius: 50%; background: #6a9fd8; cursor: pointer; border: none;
+      }
+      .control-row .val {
+        font-size: 11px; color: #6a9fd8; min-width: 35px; text-align: right;
+        font-family: 'Consolas', monospace;
+      }
+
+      /* -- Rotation buttons -- */
+      .rotation-row {
+        display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
+      }
+      .rotation-row label { font-size: 11px; color: #aaa; width: 65px; flex-shrink: 0; }
+      .rotation-row .rot-val {
+        font-size: 11px; color: #6a9fd8; min-width: 35px; text-align: right;
+        font-family: 'Consolas', monospace; margin-left: auto;
+      }
+      .rot-btn {
+        background: rgba(106,159,216,0.1); border: 1px solid rgba(106,159,216,0.3);
+        color: #6a9fd8; border-radius: 5px; width: 28px; height: 24px;
+        cursor: pointer; font-size: 13px; display: flex; align-items: center;
+        justify-content: center; transition: background 0.15s, border-color 0.15s;
+        flex-shrink: 0; padding: 0;
+      }
+      .rot-btn:hover { background: rgba(106,159,216,0.25); border-color: #6a9fd8; }
+      .rot-btn:active { background: rgba(106,159,216,0.4); }
+      .rot-step-select {
+        background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+        color: #aaa; border-radius: 4px; font-size: 10px; padding: 2px 4px;
+        width: 46px; cursor: pointer; outline: none;
+      }
+      .rot-step-select:focus { border-color: rgba(106,159,216,0.5); }
+
+      .btn-row { display: flex; gap: 6px; margin-top: 10px; }
+      .btn-row .nav-btn { flex: 1; font-size: 11px; padding: 6px; margin: 0; }
+
+      .info-card {
+        background: rgba(106, 159, 216, 0.06); border: 1px solid rgba(106, 159, 216, 0.15);
+        border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; font-size: 11px;
+      }
+      .info-row { display: flex; justify-content: space-between; color: #aaa; }
+      .info-val { color: #6a9fd8; font-family: 'Consolas', monospace; }
+
+      .section-divider {
+        height: 1px; background: rgba(255,255,255,0.06); margin: 8px 0;
+      }
+
+      /* -- Nudge pad -- */
+      .nudge-row {
+        display: flex; align-items: flex-start; gap: 6px; margin-bottom: 6px;
+      }
+      .nudge-row label { font-size: 11px; color: #aaa; width: 65px; flex-shrink: 0; padding-top: 6px; }
+      .nudge-pad {
+        display: grid;
+        grid-template-columns: repeat(3, 26px);
+        grid-template-rows: repeat(3, 24px);
+        gap: 3px;
+      }
+      .nudge-btn {
+        background: rgba(106,159,216,0.1); border: 1px solid rgba(106,159,216,0.3);
+        color: #6a9fd8; border-radius: 5px; width: 26px; height: 24px;
+        cursor: pointer; font-size: 11px; display: flex; align-items: center;
+        justify-content: center; transition: background 0.15s, border-color 0.15s; padding: 0;
+      }
+      .nudge-btn:hover  { background: rgba(106,159,216,0.25); border-color: #6a9fd8; }
+      .nudge-btn:active { background: rgba(106,159,216,0.4); }
+      .nudge-btn.center { background: transparent; border-color: rgba(255,255,255,0.08); color: #444; cursor: default; font-size: 8px; }
+      .nudge-right-col { display: flex; flex-direction: column; gap: 4px; justify-content: flex-start; }
+      .nudge-step-select {
+        background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+        color: #aaa; border-radius: 4px; font-size: 10px; padding: 2px 4px;
+        width: 58px; cursor: pointer; outline: none;
+      }
+      .nudge-step-select:focus { border-color: rgba(106,159,216,0.5); }
+      .nudge-offset-val {
+        font-size: 10px; color: #555; font-family: 'Consolas', monospace; line-height: 1.4;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="layerPanel">
+      <div id="panelHeader" title="Toggle panel">
+        <span>Map Layers</span>
+        <svg id="panelToggleIcon" viewBox="0 0 20 20" fill="none">
+          <path d="M6 8L10 12L14 8" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div id="panelBody">
+        <div class="layer-section-title">Basemap</div>
+        <div id="basemapList"></div>
+
+        <div class="layer-section-title">Overlay Layers</div>
+        <div id="toggleList"></div>
+
+        <div class="layer-section-title">3D GLB Model</div>
+        <div id="glbModelControls">
+          <div class="model-url-box">
+            <i class="fas fa-link" style="margin-right:4px; opacity:0.6;"></i>
+            sgstadium_v2.glb (Extend3D)
+          </div>
+
+          <div class="info-card">
+            <div class="info-row"><span>Site Bounds</span><span class="info-val" id="infoSize">—</span></div>
+            <div class="info-row"><span>Center Lng</span><span class="info-val" id="infoLng">—</span></div>
+            <div class="info-row"><span>Center Lat</span><span class="info-val" id="infoLat">—</span></div>
+          </div>
+
+          <!-- Scale, Heading, Altitude, Tilt sliders -->
+          <div class="control-row">
+            <label>Scale (m)</label>
+            <input type="range" id="sliderScale" min="10" max="2000" value="500" step="10">
+            <span class="val" id="valScale">500</span>
+          </div>
+          <div class="control-row">
+            <label>Heading (°)</label>
+            <input type="range" id="sliderHeading" min="0" max="360" value="0" step="1">
+            <span class="val" id="valHeading">0</span>
+          </div>
+          <div class="control-row">
+            <label>Altitude (m)</label>
+            <input type="range" id="sliderAltitude" min="-100" max="500" value="0" step="1">
+            <span class="val" id="valAltitude">0</span>
+          </div>
+          <div class="control-row">
+            <label>Tilt (°)</label>
+            <input type="range" id="sliderTilt" min="0" max="360" value="0" step="1">
+            <span class="val" id="valTilt">0</span>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <!-- Rotation buttons -->
+          <div class="rotation-row">
+            <label>Rotate</label>
+            <button class="rot-btn" id="btnRotCCW" title="Rotate anticlockwise">
+              <i class="fas fa-undo"></i>
+            </button>
+            <button class="rot-btn" id="btnRotCW" title="Rotate clockwise">
+              <i class="fas fa-redo"></i>
+            </button>
+            <select class="rot-step-select" id="rotStep" title="Rotation step size">
+              <option value="1">1°</option>
+              <option value="5">5°</option>
+              <option value="10" selected>10°</option>
+              <option value="15">15°</option>
+              <option value="45">45°</option>
+              <option value="90">90°</option>
+            </select>
+            <span class="rot-val" id="valRotation">0°</span>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <!-- Nudge pad (buttons or WASD when model loaded) -->
+          <div class="nudge-row">
+            <label>Position<br><span style="font-size:9px;color:#555;">WASD keys</span></label>
+            <div class="nudge-pad">
+              <!-- row 1 -->
+              <div></div>
+              <button class="nudge-btn" id="btnNudgeN" title="North"><i class="fas fa-arrow-up"></i></button>
+              <div></div>
+              <!-- row 2 -->
+              <button class="nudge-btn" id="btnNudgeW" title="West"><i class="fas fa-arrow-left"></i></button>
+              <button class="nudge-btn center" title="Center">✦</button>
+              <button class="nudge-btn" id="btnNudgeE" title="East"><i class="fas fa-arrow-right"></i></button>
+              <!-- row 3 -->
+              <div></div>
+              <button class="nudge-btn" id="btnNudgeS" title="South"><i class="fas fa-arrow-down"></i></button>
+              <div></div>
+            </div>
+            <div class="nudge-right-col">
+              <select class="nudge-step-select" id="nudgeStep" title="Nudge step size">
+                <option value="0.00001">~1 m</option>
+                <option value="0.0001" selected>~10 m</option>
+                <option value="0.0005">~50 m</option>
+                <option value="0.001">~100 m</option>
+                <option value="0.005">~500 m</option>
+              </select>
+              <div class="nudge-offset-val" id="nudgeOffsetVal">Δ 0, 0</div>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="nav-btn" id="btnLoadModel"><i class="fas fa-cube"></i> Load</button>
+            <button class="nav-btn" id="btnApplySettings"><i class="fas fa-sync-alt"></i> Apply</button>
+            <button class="nav-btn" id="btnRemoveModel" style="color:#d9534f; border-color:#d9534f;"><i class="fas fa-trash-alt"></i> Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="optionsDiv">
+      <button class="nav-btn" id="gotoSG">SG</button>
+      <button class="nav-btn" id="gotoMY1">MY1</button>
+      <button class="nav-btn" id="gotoMY2">MY2</button>
+      <button class="nav-btn" id="gotoUS_SF">SF, US</button>
+      <button class="nav-btn" id="gotoJP_Tokyo">Tokyo, JP</button>
+      <button class="nav-btn" id="gotoGLBSite" style="background-color:#005e95; color:white;">GLB Site</button>
+    </div>
+
+    <div id="viewDiv" class="esri-widget">
+      <div id="titleDiv">ESRI 3D</div>
+    </div>
+
+    <script type="module">
+const [
+  GeoJSONLayer, SceneView, Scene, IntegratedMesh3DTilesLayer,
+  WebTileLayer, SpatialReference, Basemap, GraphicsLayer,
+  Graphic, Polygon, Point, PointSymbol3D, ObjectSymbol3DLayer,
+  PolygonSymbol3D, FillSymbol3DLayer
+] = await $arcgis.import([
+  "@arcgis/core/layers/GeoJSONLayer.js",
+  "@arcgis/core/views/SceneView.js",
+  "@arcgis/core/Map.js",
+  "@arcgis/core/layers/IntegratedMesh3DTilesLayer.js",
+  "@arcgis/core/layers/WebTileLayer.js",
+  "@arcgis/core/geometry/SpatialReference.js",
+  "@arcgis/core/Basemap.js",
+  "@arcgis/core/layers/GraphicsLayer.js",
+  "@arcgis/core/Graphic.js",
+  "@arcgis/core/geometry/Polygon.js",
+  "@arcgis/core/geometry/Point.js",
+  "@arcgis/core/symbols/PointSymbol3D.js",
+  "@arcgis/core/symbols/ObjectSymbol3DLayer.js",
+  "@arcgis/core/symbols/PolygonSymbol3D.js",
+  "@arcgis/core/symbols/FillSymbol3DLayer.js"
+]);
+
+      const titleDiv = document.getElementById("titleDiv");
+
+      /* ── Data layers ─────────────────────────────────────────────────────── */
+      const dataGeoJSON = "data/geojson/weather/earthquake_usgs_20250830.geojson";
+
+      const template = {
+        title: "Earthquake Info",
+        content: "Magnitude {mag} {type} hit {place} on {time}",
+        fieldInfos: [{ fieldName: "time", format: { dateFormat: "short-date-short-time" } }]
+      };
+
+      const templatePOW = {
+        title: "Place of Worship",
+        content: "Name {poi_name}",
+        fieldInfos: [{ fieldName: "time", format: { dateFormat: "short-date-short-time" } }]
+      };
+
+      const renderer = {
+        type: "simple", field: "mag",
+        symbol: { type: "simple-marker", color: "orange", outline: { color: "white" } },
+        visualVariables: [{ type: "size", field: "mag", stops: [{ value: 2.5, size: "4px" }, { value: 8, size: "40px" }] }]
+      };
+
+      const rendererPOW = {
+        type: "simple", field: "poi_name",
+        symbol: { type: "simple-marker", color: "blue", outline: { color: "black" } },
+        visualVariables: [{ type: "size", field: "poi_name", stops: [{ value: 2.5, size: "4px" }, { value: 8, size: "40px" }] }]
+      };
+
+      const fillSymbol = { type: "simple-fill", color: [255, 0, 0, 0.5], outline: { color: [0, 0, 0, 1], width: 1 } };
+      const renderSG = { type: "simple", symbol: fillSymbol };
+
+      const lyrgeo_Earthquake = new GeoJSONLayer({ url: dataGeoJSON, copyright: "USGS Earthquakes", popupTemplate: template, renderer, orderBy: { field: "mag" } });
+      const lyrgeo_SG = new GeoJSONLayer({ url: "data/geojson/land/SG_OneMap_NUS.geojson", copyright: "SG Building Footprints", renderer: renderSG, elevationInfo: { mode: "on-the-ground" } });
+      const lyrgeo_MY1 = new GeoJSONLayer({ url: "data/geojson/land/MY_PlaceOfWorship_data_3693_P.geojson", copyright: "Places of Worship", popupTemplate: templatePOW, rendererPOW, orderBy: { field: "poi_name" } });
+
+      /* ── Basemap layers ───────────────────────────────────────────────────── */
+      const lyrraster_OSM_Road      = new WebTileLayer({ urlTemplate: "http://47.129.192.66:8000/OSM/{z}/{y}/{z}_y{y}_x{x}.png",                   copyright: "Local OSM tiles" });
+      const lyrraster_Google_Aerial = new WebTileLayer({ urlTemplate: "http://47.129.192.66:8000/GoogleMap_Aerial/{z}/{y}/{z}_y{y}_x{x}.jpg",       copyright: "Local Google Aerial tiles" });
+      const lyrraster_Google_Road   = new WebTileLayer({ urlTemplate: "http://47.129.192.66:8000/GoogleMap_Road/{z}/{y}/{z}_y{y}_x{x}.png",         copyright: "Local Google Road tiles" });
+      const lyrraster_ArcGIS_Aerial = new WebTileLayer({ urlTemplate: "http://47.129.192.66:8000/ArcGIS_WorldImagery/{z}/{y}/{z}_y{y}_x{x}.jpg",    copyright: "Local ArcGIS tiles" });
+
+      const basemaps = [
+        { id: "arcgis-satellite",     label: "ArcGIS Satellite",sublabel: "Online",      thumbImg: "images/imageProvider/esriArcGIS_Aerial.png", create: () => new Basemap({ baseLayers: [lyrraster_ArcGIS_Aerial] }) },
+        { id: "osm-local",            label: "OSM Road",        sublabel: "Local tiles", thumbImg: "images/imageProvider/openStreetMap.png",    create: () => new Basemap({ baseLayers: [lyrraster_OSM_Road] }) },
+        { id: "google-aerial-local",  label: "Google Aerial",   sublabel: "Local tiles", thumbImg: "images/imageProvider/googleAerial.png",     create: () => new Basemap({ baseLayers: [lyrraster_Google_Aerial] }) },
+        { id: "google-road-local",    label: "Google Road",     sublabel: "Local tiles", thumbImg: "images/imageProvider/googleRoad.png",       create: () => new Basemap({ baseLayers: [lyrraster_Google_Road] }) },
+      ];
+
+      const overlayLayers = [
+        { id: "toggle-MY1",           name: "MY - Places of Worship", desc: "MY - Places of Worship",    layer: lyrgeo_MY1,        visible: true, hasOpacity: true, opacity: 1 },
+        { id: "toggle-earthquakes",   name: "Earthquakes",            desc: "USGS earthquake markers",   layer: lyrgeo_Earthquake, visible: true, hasOpacity: true, opacity: 1 },
+        { id: "toggle-sg-footprints", name: "SG Footprints",          desc: "Building footprint polygons",layer: lyrgeo_SG,         visible: true, hasOpacity: true, opacity: 1 },
+      ];
+
+      /* ── 3D GLB Model ────────────────────────────────────────────────────── */
+      const HARDCODED_MODEL_URL = 'https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/sgstadium_v2.glb';
+
+      let currentGeoData = null;
+      let modelGraphic = null;
+      let polygonGraphic = null;
+      const cornerGraphics = [];
+
+      // Rotation state — separate from heading so the two don't fight each other
+      let currentRotation = 0;  // cumulative rotation applied via buttons (degrees)
+
+      // Nudge state — cumulative lat/lng offset from the base GeoJSON center
+      let nudgeOffsetLng = 0;
+      let nudgeOffsetLat = 0;
+
+      const graphicsLayer = new GraphicsLayer({ elevationInfo: { mode: "relative-to-ground" } });
+
+      function haversineDistance(lat1, lng1, lat2, lng2) {
+        const R = 6371000;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLng = (lng2 - lng1) * Math.PI / 180;
+        const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLng/2)**2;
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      }
+
+      function applyGeoJson() {
+        const coords = [
+          [103.872539, 1.306260],
+          [103.878032, 1.306260],
+          [103.878032, 1.300768],
+          [103.872539, 1.300768],
+          [103.872539, 1.306260]
+        ];
+
+        const lngs = coords.map(c => c[0]);
+        const lats = coords.map(c => c[1]);
+        const minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
+        const minLat = Math.min(...lats), maxLat = Math.max(...lats);
+        const centerLng = (minLng + maxLng) / 2;
+        const centerLat = (minLat + maxLat) / 2;
+        const widthM  = Math.round(haversineDistance(centerLat, minLng, centerLat, maxLng));
+        const heightM = Math.round(haversineDistance(minLat, centerLng, maxLat, centerLng));
+
+        currentGeoData = { coords, centerLng, centerLat, widthM, heightM };
+
+        document.getElementById('infoSize').textContent = widthM + 'm x ' + heightM + 'm';
+        document.getElementById('infoLng').textContent  = centerLng.toFixed(6);
+        document.getElementById('infoLat').textContent  = centerLat.toFixed(6);
+
+        const defaultScale = Math.max(widthM, heightM);
+        document.getElementById('sliderScale').value      = defaultScale;
+        document.getElementById('valScale').textContent   = defaultScale;
+
+        if (polygonGraphic) graphicsLayer.remove(polygonGraphic);
+        cornerGraphics.forEach(g => graphicsLayer.remove(g));
+        cornerGraphics.length = 0;
+
+        polygonGraphic = new Graphic({
+          geometry: new Polygon({ rings: coords }),
+          symbol: new PolygonSymbol3D({ symbolLayers: [new FillSymbol3DLayer({ material: { color: [106,159,216,0.15] }, outline: { color: [106,159,216,0.9], size: 2.5 } })] })
+        });
+        graphicsLayer.add(polygonGraphic);
+
+        coords.slice(0, -1).forEach(coord => {
+          const cg = new Graphic({
+            geometry: new Point({ longitude: coord[0], latitude: coord[1], z: 2 }),
+            symbol: new PointSymbol3D({ symbolLayers: [new ObjectSymbol3DLayer({ resource: { primitive: "cylinder" }, material: { color: [106,159,216,0.85] }, width: 8, height: 20, depth: 8, anchor: "bottom" })] })
+          });
+          graphicsLayer.add(cg);
+          cornerGraphics.push(cg);
+        });
+      }
+
+      /* ── getEffectiveHeading ─────────────────────────────────────────────── */
+      // Combines the heading slider value with the cumulative rotation button value.
+      // This way both controls work independently and additively.
+      function getEffectiveHeading() {
+        const sliderHeading = parseInt(document.getElementById('sliderHeading').value) || 0;
+        return (sliderHeading + currentRotation + 360000) % 360;
+      }
+
+      /* ── getEffectivePosition ────────────────────────────────────────────── */
+      // Returns the model center with cumulative nudge offsets applied
+      function getEffectivePosition() {
+        if (!currentGeoData) return { lng: 0, lat: 0 };
+        return {
+          lng: currentGeoData.centerLng + nudgeOffsetLng,
+          lat: currentGeoData.centerLat + nudgeOffsetLat,
+        };
+      }
+
+      /* ── nudge: shift model N/S/E/W ──────────────────────────────────────── */
+      function nudge(direction) {
+        const step = parseFloat(document.getElementById('nudgeStep').value) || 0.0001;
+        if (direction === 'N') nudgeOffsetLat += step;
+        if (direction === 'S') nudgeOffsetLat -= step;
+        if (direction === 'E') nudgeOffsetLng += step;
+        if (direction === 'W') nudgeOffsetLng -= step;
+
+        const dLng = nudgeOffsetLng >= 0 ? '+' + nudgeOffsetLng.toFixed(5) : nudgeOffsetLng.toFixed(5);
+        const dLat = nudgeOffsetLat >= 0 ? '+' + nudgeOffsetLat.toFixed(5) : nudgeOffsetLat.toFixed(5);
+        document.getElementById('nudgeOffsetVal').textContent = `Δlng ${dLng}\nΔlat ${dLat}`;
+
+        if (modelGraphic) loadModel();
+      }
+
+      /* ── loadModel ───────────────────────────────────────────────────────── */
+      function loadModel() {
+        if (!currentGeoData) return;
+        if (modelGraphic) { graphicsLayer.remove(modelGraphic); modelGraphic = null; }
+
+        const scale    = parseInt(document.getElementById('sliderScale').value)    || 500;
+        const altitude = parseInt(document.getElementById('sliderAltitude').value) || 0;
+        const tilt     = parseInt(document.getElementById('sliderTilt').value)     || 0;
+        const heading  = getEffectiveHeading();
+        const pos      = getEffectivePosition();
+
+        modelGraphic = new Graphic({
+          geometry: new Point({ longitude: pos.lng, latitude: pos.lat, z: altitude }),
+          symbol: new PointSymbol3D({
+            symbolLayers: [new ObjectSymbol3DLayer({
+              resource: { href: HARDCODED_MODEL_URL },
+              width: scale, anchor: "bottom",
+              heading: heading,
+              tilt: tilt
+            })]
+          })
+        });
+
+        graphicsLayer.add(modelGraphic);
+        titleDiv.innerHTML = "ESRI 3D";
+      }
+
+      /* ── rotate: step clockwise or anticlockwise ─────────────────────────── */
+      function rotate(direction) {
+        // direction: +1 = clockwise, -1 = anticlockwise
+        const step = parseInt(document.getElementById('rotStep').value) || 10;
+        currentRotation = (currentRotation + direction * step + 360000) % 360;
+        document.getElementById('valRotation').textContent = currentRotation + '°';
+
+        // If model is already loaded, re-apply immediately (live rotation)
+        if (modelGraphic) loadModel();
+      }
+
+      /* ── Scene & View ────────────────────────────────────────────────────── */
+      const scene = new Scene({ basemap: basemaps[0].create(), layers: [lyrgeo_Earthquake, lyrgeo_SG, lyrgeo_MY1, graphicsLayer] });
+
+      const view = new SceneView({
+        container: "viewDiv", map: scene,
+        spatialReference: SpatialReference.WGS84,
+        center: [103.851959, 1.29027], zoom: 15,
+        padding: { top: 40 }, qualityProfile: "high"
+      });
+
+      view.when(() => { applyGeoJson(); });
+
+      /* ── UI: Basemap selector ────────────────────────────────────────────── */
+      const basemapListEl = document.getElementById("basemapList");
+      let activeBasemapId = basemaps[0].id;
+
+      basemaps.forEach((bm) => {
+        const item = document.createElement("div");
+        item.className = "basemap-item" + (bm.id === activeBasemapId ? " active" : "");
+        item.dataset.basemapId = bm.id;
+        item.setAttribute("role", "radio");
+        item.setAttribute("aria-checked", bm.id === activeBasemapId ? "true" : "false");
+        item.setAttribute("tabindex", "0");
+        item.innerHTML = `
+          <div class="basemap-thumb">
+            <img src="${bm.thumbImg}" alt="${bm.label}" loading="lazy" />
+            <div class="thumb-fallback">${bm.label.split(" ").map(w=>w[0]).join("")}</div>
+          </div>
+          <div>
+            <div class="basemap-label">${bm.label}</div>
+            <div class="basemap-sublabel">${bm.sublabel}</div>
+          </div>`;
+
+        item.querySelector("img").addEventListener("error", e => e.target.classList.add("hidden"));
+
+        function selectBasemap() {
+          if (activeBasemapId === bm.id) return;
+          activeBasemapId = bm.id;
+          scene.basemap = bm.create();
+          basemapListEl.querySelectorAll(".basemap-item").forEach(el => {
+            const isActive = el.dataset.basemapId === activeBasemapId;
+            el.classList.toggle("active", isActive);
+            el.setAttribute("aria-checked", isActive ? "true" : "false");
+          });
+        }
+        item.addEventListener("click", selectBasemap);
+        item.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" ") { e.preventDefault(); selectBasemap(); } });
+        basemapListEl.appendChild(item);
+      });
+
+      /* ── UI: Overlay toggles ─────────────────────────────────────────────── */
+      const toggleListEl = document.getElementById("toggleList");
+      overlayLayers.forEach((ol) => {
+        ol.layer.visible = ol.visible;
+        const row = document.createElement("div");
+        row.className = "toggle-item";
+        row.innerHTML = `
+          <div class="toggle-info">
+            <span class="toggle-name">${ol.name}</span>
+            <span class="toggle-desc">${ol.desc}</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="${ol.id}" ${ol.visible ? "checked" : ""} />
+            <span class="toggle-slider"></span>
+          </label>`;
+        toggleListEl.appendChild(row);
+
+        let opacityRow = null;
+        if (ol.hasOpacity) {
+          opacityRow = document.createElement("div");
+          opacityRow.className = "opacity-row";
+          opacityRow.style.display = ol.visible ? "flex" : "none";
+          opacityRow.innerHTML = `<label>Opacity</label><input type="range" min="0" max="100" value="${Math.round(ol.opacity*100)}" /><span class="opacity-val">${Math.round(ol.opacity*100)}%</span>`;
+          toggleListEl.appendChild(opacityRow);
+          const ri = opacityRow.querySelector("input[type='range']");
+          const vs = opacityRow.querySelector(".opacity-val");
+          ri.addEventListener("input", () => { const v=parseInt(ri.value,10); ol.opacity=v/100; ol.layer.opacity=ol.opacity; vs.textContent=v+"%"; });
+        }
+        row.querySelector("input[type='checkbox']").addEventListener("change", e => {
+          ol.visible = e.target.checked; ol.layer.visible = ol.visible;
+          if (opacityRow) opacityRow.style.display = ol.visible ? "flex" : "none";
+        });
+      });
+
+      /* ── UI: Slider listeners ────────────────────────────────────────────── */
+      document.getElementById('sliderScale').addEventListener('input',    e => document.getElementById('valScale').textContent    = e.target.value);
+      document.getElementById('sliderHeading').addEventListener('input',  e => document.getElementById('valHeading').textContent  = e.target.value);
+      document.getElementById('sliderAltitude').addEventListener('input', e => document.getElementById('valAltitude').textContent = e.target.value);
+      document.getElementById('sliderTilt').addEventListener('input',     e => document.getElementById('valTilt').textContent     = e.target.value);
+
+      /* ── UI: Rotation button listeners ───────────────────────────────────── */
+      document.getElementById('btnRotCW').addEventListener('click',  () => rotate(+1));
+      document.getElementById('btnRotCCW').addEventListener('click', () => rotate(-1));
+
+      /* ── UI: Nudge button listeners ──────────────────────────────────────── */
+      document.getElementById('btnNudgeN').addEventListener('click', () => nudge('N'));
+      document.getElementById('btnNudgeS').addEventListener('click', () => nudge('S'));
+      document.getElementById('btnNudgeE').addEventListener('click', () => nudge('E'));
+      document.getElementById('btnNudgeW').addEventListener('click', () => nudge('W'));
+
+      /* ── WASD keyboard nudge ─────────────────────────────────────────────── */
+      // Intercept WASD before ArcGIS camera handler sees them (only when model loaded)
+      view.on("key-down", (e) => {
+        const key = e.key.toLowerCase();
+        if (!['w','a','s','d'].includes(key)) return;
+        if (!modelGraphic) return;   // only active when model is loaded
+        e.stopPropagation();         // prevent ArcGIS camera from moving
+        if (key === 'w') nudge('N');
+        if (key === 's') nudge('S');
+        if (key === 'd') nudge('E');
+        if (key === 'a') nudge('W');
+      });
+
+      /* ── UI: Model action buttons ────────────────────────────────────────── */
+      document.getElementById('btnLoadModel').addEventListener('click', loadModel);
+
+      document.getElementById('btnApplySettings').addEventListener('click', () => {
+        if (modelGraphic) loadModel();
+        else alert("Please load the model first.");
+      });
+
+      document.getElementById('btnRemoveModel').addEventListener('click', () => {
+        if (modelGraphic) {
+          graphicsLayer.remove(modelGraphic);
+          modelGraphic = null;
+          titleDiv.innerHTML = "ESRI 3D";
+        }
+      });
+
+      /* ── Panel collapse ──────────────────────────────────────────────────── */
+      document.getElementById("panelHeader").addEventListener("click", () => {
+        document.getElementById("layerPanel").classList.toggle("collapsed");
+      });
+
+      /* ── Navigation buttons ──────────────────────────────────────────────── */
+      function catchAbortError(e) { if (e.name !== "AbortError") console.error(e); }
+
+      document.getElementById("gotoJP_Tokyo").addEventListener("click", () => view.goTo({ position: { x: 139.81088, y: 35.70979, z: 7444.549371, spatialReference: { wkid: 4326 } }, heading: -0.86, tilt: 0.28 }).catch(catchAbortError));
+      document.getElementById("gotoMY1").addEventListener("click",      () => view.goTo({ position: { x: 102.580631, y: 2.576520, z: 8000, spatialReference: { wkid: 4326 } }, heading: -0.86, tilt: 0.28 }).catch(catchAbortError));
+      document.getElementById("gotoMY2").addEventListener("click",      () => view.goTo({ position: { x: 102.4842777, y: 5.7988961, z: 8000, spatialReference: { wkid: 4326 } }, heading: -0.86, tilt: 0.28 }).catch(catchAbortError));
+      document.getElementById("gotoUS_SF").addEventListener("click",    () => view.goTo({ position: { x: -122.41464, y: 37.78754, z: 7444.549371, spatialReference: { wkid: 4326 } }, heading: -0.86, tilt: 0.28 }).catch(catchAbortError));
+      document.getElementById("gotoSG").addEventListener("click",       () => view.goTo({ position: { x: 103.85890960693361, y: 1.2818602133200037, z: 10000, spatialReference: { wkid: 4326 } }, heading: 0, tilt: 0 }).catch(catchAbortError));
+
+      document.getElementById("gotoGLBSite").addEventListener("click", () => {
+        if (currentGeoData) {
+          view.goTo({
+            position: { longitude: currentGeoData.centerLng, latitude: currentGeoData.centerLat - 0.006, z: 800 },
+            tilt: 65, heading: 10
+          }, { duration: 2000 }).catch(catchAbortError);
+        }
+      });
+
+    </script>
+  </body>
+</html>
