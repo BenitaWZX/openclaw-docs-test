@@ -364,6 +364,7 @@
       <button class="nav-btn" id="gotoUS_SF">SF, US</button>
       <button class="nav-btn" id="gotoJP_Tokyo">Tokyo, JP</button>
       <button class="nav-btn" id="gotoGLBSite" style="background-color:#005e95; color:white;">GLB Site</button>
+      <button class="nav-btn" id="btnSavePos" style="background-color:#2e7d32; color:white; margin-left:4px;">💾 Save Position</button>
     </div>
 
     <div id="viewDiv" class="esri-widget">
@@ -744,6 +745,52 @@ const [
           }, { duration: 2000 }).catch(catchAbortError);
         }
       });
+
+      /* ── Save / Load GLB position to localStorage ────────────────────── */
+      function saveModelPosition() {
+        const state = {
+          modelUrl: HARDCODED_MODEL_URL,
+          scale:       parseInt(document.getElementById('sliderScale').value),
+          heading:     parseInt(document.getElementById('sliderHeading').value),
+          altitude:    parseInt(document.getElementById('sliderAltitude').value),
+          tilt:        parseInt(document.getElementById('sliderTilt').value),
+          rotation:    currentRotation,
+          nudgeLng:    nudgeOffsetLng,
+          nudgeLat:    nudgeOffsetLat,
+        };
+        localStorage.setItem('glbModelState', JSON.stringify(state));
+        alert('💾 Position saved!');
+      }
+
+      function loadModelPosition() {
+        const raw = localStorage.getItem('glbModelState');
+        if (!raw) return;
+        try {
+          const state = JSON.parse(raw);
+          if (state.modelUrl !== HARDCODED_MODEL_URL) return;
+          document.getElementById('sliderScale').value    = state.scale;
+          document.getElementById('valScale').textContent    = state.scale;
+          document.getElementById('sliderHeading').value  = state.heading;
+          document.getElementById('valHeading').textContent  = state.heading;
+          document.getElementById('sliderAltitude').value = state.altitude;
+          document.getElementById('valAltitude').textContent = state.altitude;
+          document.getElementById('sliderTilt').value     = state.tilt;
+          document.getElementById('valTilt').textContent     = state.tilt;
+          currentRotation  = state.rotation || 0;
+          nudgeOffsetLng   = state.nudgeLng || 0;
+          nudgeOffsetLat   = state.nudgeLat || 0;
+          updateNudgeDisplay();
+          if (typeof loadModel === 'function') loadModel();
+          console.log('📐 Position restored from saved state');
+        } catch(e) {
+          console.warn('Failed to load saved position', e);
+        }
+      }
+
+      document.getElementById('btnSavePos').addEventListener('click', saveModelPosition);
+
+      // Auto-restore on page load (delayed until map+model are ready)
+      setTimeout(loadModelPosition, 2000);
 
     </script>
   </body>
