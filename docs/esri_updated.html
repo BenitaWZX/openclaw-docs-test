@@ -263,8 +263,10 @@
         <div class="layer-section-title">3D GLB Model</div>
         <div id="glbModelControls">
           <div class="model-url-box">
-            <i class="fas fa-link" style="margin-right:4px; opacity:0.6;"></i>
-            sgstadium_v2.glb (Extend3D)
+            <select id="modelSelector" style="background:transparent;color:inherit;border:none;font-size:12px;width:100%;cursor:pointer;">
+              <option value="https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/sgstadium_v2.glb">sgstadium_v2.glb (Extend3D)</option>
+              <option value="https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/dreamgaussian_sg_stadium.glb">dreamgaussian_sg_stadium.glb (DreamGaussian)</option>
+            </select>
           </div>
 
           <div class="info-card">
@@ -450,6 +452,16 @@ const [
         { id: "toggle-sg-footprints", name: "SG Footprints",          desc: "Building footprint polygons",layer: lyrgeo_SG,         visible: true, hasOpacity: true, opacity: 1 },
       ];
 
+      function getModelUrl() {
+        const sel = document.getElementById('modelSelector');
+        return sel ? sel.value : HARDCODED_MODEL_URL;
+      }
+
+      document.getElementById('modelSelector').addEventListener('change', function() {
+        if (modelGraphic) { graphicsLayer.remove(modelGraphic); modelGraphic = null; }
+        if (typeof loadModel === 'function') loadModel();
+      });
+
       /* ── 3D GLB Model ────────────────────────────────────────────────────── */
       const HARDCODED_MODEL_URL = 'https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/sgstadium_v2.glb';
 
@@ -571,7 +583,7 @@ const [
           geometry: new Point({ longitude: pos.lng, latitude: pos.lat, z: altitude }),
           symbol: new PointSymbol3D({
             symbolLayers: [new ObjectSymbol3DLayer({
-              resource: { href: HARDCODED_MODEL_URL },
+              resource: { href: getModelUrl() },
               width: scale, anchor: "bottom",
               heading: heading,
               tilt: tilt
@@ -749,7 +761,7 @@ const [
       /* ── Save / Load GLB position to localStorage ────────────────────── */
       function saveModelPosition() {
         const state = {
-          modelUrl: HARDCODED_MODEL_URL,
+          modelUrl: getModelUrl(),
           scale:       parseInt(document.getElementById('sliderScale').value),
           heading:     parseInt(document.getElementById('sliderHeading').value),
           altitude:    parseInt(document.getElementById('sliderAltitude').value),
