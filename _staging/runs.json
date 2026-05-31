@@ -1,5 +1,57 @@
 [
   {
+    "job_name": "map-anything-1780189227",
+    "repo_full_name": "facebookresearch/map-anything",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/openclaw-inputs/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 895,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "Two issues: (1) The destination path '/workspace/map-anything' already existed from a previous failed run, causing git clone to fail. Fixed by removing the directory before cloning. (2) Conda was not found because Miniconda is not installed on the base image. Added a step to download and install Miniconda to a known path, and ensured PATH is set in the inference command so conda is accessible.",
+      "The original pip install -e .[all] failed because it likely tried to download PyTorch from PyPI, which may have a different CUDA version or timeout issues on RunPod. We explicitly install PyTorch with CUDA 11.8 support (compatible with A100/H100) using the --use-deprecated=legacy-resolver flag to avoid dependency resolution issues, and added --no-cache-dir to avoid cache-related failures. We also removed the '[all]' extra which may have included optional dependencies that are not needed or cause conflicts. The inference command remains the same as it was correct.",
+      "The original install step did not explicitly skip dependency resolution for torch/torchvision, which caused the install to be inappropriately slow or hang on large model downloads, as seen in the partial download logs. The fix uses --no-deps to prevent pip from fetching the full dependency tree for torch/torchvision, ensuring a clean and fast install. The inference command remains unchanged as it was correct."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch==2.1.0+cu121 torchvision==0.16.0+cu121 --extra-index-url https://download.pytorch.org/whl/cu121",
+      "needs_h100": false,
+      "estimated_vram_gb": 24,
+      "install_steps": [
+        "cd /workspace && if [ -d map-anything ]; then rm -rf map-anything; fi && git clone https://github.com/facebookresearch/map-anything.git map-anything",
+        "cd /workspace/map-anything && if ! command -v conda &>/dev/null; then wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && bash /tmp/miniconda.sh -b -p /workspace/miniconda3 && export PATH=/workspace/miniconda3/bin:$PATH; fi && export PATH=/workspace/miniconda3/bin:$PATH && conda create -y -n mapanything python=3.10 && conda run -n mapanything pip install --no-deps --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cu118 && conda run -n mapanything pip install --no-cache-dir -e .",
+        "mkdir -p /workspace/inputs /workspace/outputs"
+      ],
+      "input_flag": "--images",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "cd /workspace/map-anything && export PATH=/workspace/miniconda3/bin:$PATH && conda run -n mapanything python -m mapanything.inference --images /workspace/inputs --output_dir /workspace/outputs --model facebook/mae-anything --task reconstruction --export ply",
+      "output_formats": [
+        "ply"
+      ],
+      "notes": "Single image input; may need to convert to a folder or supply additional calibration/pose if required.",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "Install errors:\nSSH command failed:\n.......... .......... 99%  372M 0s\n158250K .......... .......... .......... .......... .......... 99%  336M 0s\n158300K .......... .......... .......... .......... .......... 99%  355M 0s\n158350K .......... .......... .......... .......... .......... 99%  373M 0s\n158400K .......... .......... .......... .......... .......... 99%  341M 0s\n158450K .......... .......... .......... .......... .......... 99%  349M 0s\n158500K .......... .......... .......... .......... .......... 99\n\nCommand '['scp', '-i', '/tmp/tmpzjqo_xnt/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '30224', '-r', 'root@213.173.105.4:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/map-anything-1780189227/']' returned non-zero exit status 1.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/map-anything-1780189227",
+    "cost_usd": 0.445,
+    "variant": "test",
+    "reason": "With 3,427 stars and a recent push within days, MapAnything offers a promising feed-forward metric 3D reconstruction approach worth testing now\u2014especially given its first-time visibility in your pipeline.",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-05-31T01:15:22.663308+00:00",
+    "timestamp_human": "May 31 2026, 01:15"
+  },
+  {
     "job_name": "sgstadium-v2",
     "repo_full_name": "SNU-VGILab/Extend3D",
     "repo_url": "https://github.com/SNU-VGILab/Extend3D",
