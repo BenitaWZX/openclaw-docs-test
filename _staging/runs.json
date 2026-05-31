@@ -1,5 +1,61 @@
 [
   {
+    "job_name": "dreamgaussian-1780203653",
+    "repo_full_name": "dreamgaussian/dreamgaussian",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 1048,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "The error occurred during the installation of nvdiffrast because the original pip command tried to clone the repository and build the wheel from source, but the process failed due to missing build dependencies or a compilation error. The fix appends `#egg=nvdiffrast` to the git URL, which tells pip to use the project name as 'nvdiffrast' and allows it to better handle the build process. Additionally, ensure that system dependencies for compiling CUDA extensions (like cuda-toolkit and gcc) are present; if not, they should be installed beforehand. The inference command was correct and unchanged.",
+      "The error occurred because the nvdiffrast installation from GitHub failed due to subprocess exit code 1, likely because the repository requires building from source with CUDA and a compiler, and the environment didn't have the necessary dependencies (e.g., setuptools, wheel, or a compatible compiler). Since the DreamGaussian repository already includes nvdiffrast as a dependency in its requirements.txt, removing the explicit `pip install git+https://github.com/NVlabs/nvdiffrast` step avoids the failed build. The remaining install steps stayed the same, and the inference command was unchanged because the issue was purely in installation.",
+      "Two issues: 1) NumPy 2.0 is incompatible with the installed PyTorch version, causing a crash during import. Fixed by pinning numpy<2. 2) The second command (main2.py) is not part of the dreamgaussian repo; the error shows main.py attempts to read the input as a text file, treating 'SG_Stadium.png' as a prompt instead of an image path, leading to a UnicodeDecodeError. This likely occurs because the '-c' config sets the input as a prompt file path, but the original intended usage for image input is via a different entry. Since the first command (main.py) already handles the image input correctly with the given config, only that command is needed."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu121",
+      "needs_h100": false,
+      "estimated_vram_gb": 24,
+      "install_steps": [
+        "pip install 'numpy<2'",
+        "pip install -r requirements.txt",
+        "git clone --recursive https://github.com/ashawkey/diff-gaussian-rasterization",
+        "pip install ./diff-gaussian-rasterization",
+        "pip install ./simple-knn",
+        "pip install git+https://github.com/ashawkey/kiuikit"
+      ],
+      "input_flag": "--input",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "python main.py --config configs/image.yaml input=/workspace/inputs/SG_Stadium.png save_path=/workspace/outputs/stadium",
+      "output_formats": [
+        "obj",
+        "ply"
+      ],
+      "notes": "Image-to-3D: run process.py first for background removal, then main.py for Gaussian stage, then main2.py for mesh stage. GUI mode optional. For visualization: kire /workspace/outputs/stadium.obj --save_video stadium.mp4 --wogui (requires OpenGL; use force_cuda_rast if errors).",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "SSH command failed:\nWarning: Permanently added '[185.216.23.206]:10646' (ED25519) to the list of known hosts.\n\n\nCommand '['scp', '-i', '/tmp/tmp6xjl_kav/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '10646', '-r', 'root@185.216.23.206:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/dreamgaussian-1780203653/']' returned non-zero exit status 1.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/dreamgaussian-1780203653",
+    "cost_usd": 0.521,
+    "variant": "test",
+    "reason": "Manual test \u2014 follow the README prompt",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-05-31T05:18:22.340217+00:00",
+    "timestamp_human": "May 31 2026, 05:18"
+  },
+  {
     "job_name": "dreamgaussian-1780203613",
     "repo_full_name": "dreamgaussian/dreamgaussian",
     "repo_url": "",
