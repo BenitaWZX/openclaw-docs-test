@@ -1,5 +1,41 @@
 [
   {
+    "job_name": "dreamgaussian-sg-stadium",
+    "repo_full_name": "dreamgaussian/dreamgaussian",
+    "repo_url": "https://github.com/dreamgaussian/dreamgaussian",
+    "repo_stars": 4327,
+    "variant": "test",
+    "success": true,
+    "gpu_type": "A100-SXM4-80GB",
+    "duration_sec": 300,
+    "cost_usd": 0.15,
+    "input_files": [
+      "SG_Stadium.png"
+    ],
+    "reason": "Manual run \u2014 followed README exactly with --no-build-isolation + pymeshlab pin",
+    "output_files": [
+      "dreamgaussian_sg_stadium.glb"
+    ],
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "fix_attempts": 2,
+    "fix_summaries": [
+      "Installed nvdiffrast with --no-build-isolation flag (needed to find installed PyTorch)",
+      "Downgraded pymeshlab to <2024 for API compatibility + diffusers to <0.30 for flash_attn compat"
+    ],
+    "cfg": {
+      "python_version": "3.11",
+      "cuda_version": "12.4",
+      "pytorch_install": "pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124",
+      "docker_image": "runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel",
+      "estimated_vram_gb": 24,
+      "inference_cmd": "process.py -> main.py -> main2.py (3-step DreamGaussian pipeline)"
+    },
+    "hf_dataset": "Bwzx/3d-reconstructions",
+    "timestamp": "2026-05-31T06:09:05.201240+00:00",
+    "timestamp_human": "May 31 2026, 06:09"
+  },
+  {
     "job_name": "dreamgaussian-1780203653",
     "repo_full_name": "dreamgaussian/dreamgaussian",
     "repo_url": "",
