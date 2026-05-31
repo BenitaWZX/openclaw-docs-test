@@ -1,5 +1,38 @@
 [
   {
+    "job_name": "sgstadium-v2",
+    "repo_full_name": "SNU-VGILab/Extend3D",
+    "repo_url": "https://github.com/SNU-VGILab/Extend3D",
+    "repo_stars": 0,
+    "variant": "test",
+    "success": true,
+    "gpu_type": "A100-SXM4-80GB",
+    "duration_sec": 420,
+    "cost_usd": 0.21,
+    "input_files": [
+      "SG_Stadium.png"
+    ],
+    "reason": "Second run \u2014 sgstadium_v2.glb, 101K verts",
+    "output_files": [
+      "sgstadium_v2.glb"
+    ],
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "fix_attempts": 0,
+    "fix_summaries": [],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.4",
+      "pytorch_install": "conda create -n extend3d python=3.10 && pip install -r requirements.txt",
+      "docker_image": "runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel + conda env",
+      "estimated_vram_gb": 80,
+      "inference_cmd": "Extend3D.from_pretrained(\"microsoft/TRELLIS-image-large\").cuda()"
+    },
+    "hf_dataset": "Bwzx/3d-reconstructions",
+    "timestamp": "2026-05-31T04:51:09.983889+00:00",
+    "timestamp_human": "May 31 2026, 04:51"
+  },
+  {
     "job_name": "InstantMesh-1780190127",
     "repo_full_name": "TencentARC/InstantMesh",
     "repo_url": "",
