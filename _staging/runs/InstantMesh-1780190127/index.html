@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>InstantMesh-1780190127 · Reproducible OpenSource Image-to-3D Research</title>
+<style>
+  :root{--bg:#0d0d12;--bg1:#13131a;--bg2:#1a1a24;--border:#2a2a3a;
+    --text:#e8e8f8;--text1:#a0a0c0;--text2:#606080;
+    --accent:#7c6af7;--green:#4ade80;--red:#f87171;--amber:#fbbf24;--blue:#60a5fa;--teal:#2dd4bf;
+    --mono:'SF Mono','Fira Code',monospace;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:14px;line-height:1.6;padding:0;}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 24px;}
+  h1{font-size:22px;font-weight:700;letter-spacing:-0.3px;margin-bottom:4px;}
+  h2{font-size:15px;font-weight:600;color:var(--text1);margin:24px 0 10px;}
+  h3{font-size:13px;font-weight:600;color:var(--text1);margin:0 0 8px;}
+  a{color:var(--blue);text-decoration:none;}a:hover{text-decoration:underline;}
+  .sub{font-size:12px;color:var(--text2);margin-bottom:28px;}
+  .card{background:var(--bg1);border:1px solid var(--border);border-radius:10px;
+    padding:16px 20px;margin-bottom:12px;}
+  .badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+    padding:2px 10px;border-radius:99px;}
+  .badge.ok{background:rgba(74,222,128,0.12);color:var(--green);}
+  .badge.fail{background:rgba(248,113,113,0.12);color:var(--red);}
+  .badge.warn{background:rgba(251,191,36,0.12);color:var(--amber);}
+  .kv{display:flex;align-items:center;justify-content:space-between;
+    font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);}
+  .kv:last-child{border-bottom:none;}
+  .kv .k{color:var(--text2);}
+  .kv .v{font-family:var(--mono);color:var(--teal);font-size:11px;}
+  .fix-item{background:var(--bg2);border-left:2px solid var(--amber);
+    border-radius:0 6px 6px 0;padding:8px 12px;margin-bottom:8px;
+    font-size:12px;color:var(--text1);}
+  .err-block{background:var(--bg2);border-left:2px solid var(--red);
+    border-radius:0 6px 6px 0;padding:8px 12px;
+    font-family:var(--mono);font-size:11px;color:var(--red);white-space:pre-wrap;word-break:break-all;}
+  .out-file{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);
+    border:1px solid var(--border);border-radius:6px;padding:5px 10px;
+    font-family:var(--mono);font-size:11px;color:var(--teal);margin:4px;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+  .stat{background:var(--bg1);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+  .stat-val{font-size:26px;font-weight:700;font-family:var(--mono);}
+  .stat-key{font-size:11px;color:var(--text2);margin-top:2px;}
+  .stat.green .stat-val{color:var(--green);}
+  .stat.red .stat-val{color:var(--red);}
+  .stat.amber .stat-val{color:var(--amber);}
+  .stat.blue .stat-val{color:var(--blue);}
+  .run-row{display:grid;grid-template-columns:1fr auto auto auto;gap:12px;
+    align-items:start;padding:10px 0;border-bottom:1px solid var(--border);}
+  .run-row:last-child{border-bottom:none;}
+  .run-name{font-size:12px;font-family:var(--mono);color:var(--blue);}
+  .run-repo{font-size:11px;color:var(--text2);margin-top:2px;}
+  .run-reason{font-size:11px;color:var(--text2);margin-top:3px;
+    font-style:italic;max-width:480px;line-height:1.4;}
+  .run-meta{font-size:11px;color:var(--text2);}
+  .nav{display:flex;align-items:center;gap:10px;padding:12px 24px;
+    background:var(--bg1);border-bottom:1px solid var(--border);margin-bottom:0;}
+  .nav-logo{font-size:14px;font-weight:700;background:linear-gradient(135deg,#a594ff,#2dd4bf);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .nav-links{display:flex;gap:16px;margin-left:auto;}
+  .nav-links a{font-size:12px;color:var(--text1);}
+  @media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr);}
+    .run-row{grid-template-columns:1fr auto;}}
+</style>
+
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js"></script></head>
+<body>
+
+<div class="nav">
+  <div class="nav-logo">⬡ OpenClaw</div>
+  <div class="nav-links">
+    <a href="../../index.html">Dashboard</a>
+    <a href="https://github.com" target="_blank">GitHub</a>
+  </div>
+</div>
+<div class="wrap">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+    <h1>InstantMesh-1780190127</h1>
+    <span class="badge fail">✗ Failed</span>
+    <span class="badge warn" style="font-size:11px;">test</span>
+  </div>
+  <div class="sub">
+    <a href="https://github.com/TencentARC/InstantMesh" target="_blank">TencentARC/InstantMesh</a>
+    · May 31 2026, 01:20 · 5m 28s · $0.16 · A100
+    · 3 fix attempt(s)
+  </div>
+
+  <h2>Reason for Run</h2><div class='card'><div style='font-size:13px;color:var(--text1);line-height:1.7;font-style:italic;'>With 4,396 stars and a recent push on January 3, 2025, this repo is worth running now as a high-quality, actively maintained solution for single-image 3D mesh generation, and your first-time discovery of it signals it’s a timely addition to your pipeline.</div></div>
+
+  <div class="stats">
+    <div class="stat red">
+      <div class="stat-val">✗</div>
+      <div class="stat-key">outcome</div>
+    </div>
+    <div class="stat amber"><div class="stat-val">3</div><div class="stat-key">fixes applied</div></div>
+    <div class="stat blue"><div class="stat-val">5m 28s</div><div class="stat-key">duration</div></div>
+    <div class="stat"><div class="stat-val">$0.16</div><div class="stat-key">RunPod cost</div></div>
+  </div>
+
+  <h2>Repo</h2>
+  <div class="card">
+    <div class="kv"><span class="k">Repo</span>
+      <span class="v"><a href="https://github.com/TencentARC/InstantMesh" target="_blank">TencentARC/InstantMesh</a></span></div>
+    <div class="kv"><span class="k">Stars</span><span class="v">★ 0</span></div>
+    <div class="kv"><span class="k">Input mode</span><span class="v">single</span></div>
+    <div class="kv"><span class="k">Input files</span><span class="v">SG_Stadium.png</span></div>
+  </div>
+
+  <h2>Description</h2>
+  <div class="card">
+    <div style="font-size:13px;color:var(--text1);line-height:1.7;"></div>
+  </div>
+
+  <h2>Auto-detected Config</h2>
+  <div class="card"><div class="kv"><span class="k">Python</span><span class="v">3.10</span></div><div class="kv"><span class="k">CUDA</span><span class="v">12.1</span></div><div class="kv"><span class="k">PyTorch install</span><span class="v">pip install torch==2.1.0+cu121 torchvision==0.16.0+cu121 --e…</span></div><div class="kv"><span class="k">GPU</span><span class="v">A100</span></div><div class="kv"><span class="k">Est. VRAM</span><span class="v">24 GB</span></div><div class="kv"><span class="k">Docker image</span><span class="v">runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04</span></div><div class="kv"><span class="k">Input flag</span><span class="v">--image</span></div><div class="kv"><span class="k">Inference cmd</span><span class="v">python run.py configs/instant-mesh-large.yaml /workspace/inputs/SG_Stadium.png --save_video --output_dir /workspace/outputs</span></div></div>
+
+  <h2>Output Files</h2>
+  <div class="card" style="padding:12px 16px;"><span style="color:var(--text2);font-size:12px;">No outputs downloaded</span></div>
+
+  <h2>View in 3D</h2>
+  <div class="card" style="padding:12px 16px;">
+    <div style="color:var(--text2);font-size:12px;">No 3D files available for viewing</div>
+  </div>
+
+  <h2>Auto-fix Log (3 attempt(s))</h2>
+  <div class="card"><div class="fix-item"><strong>Fix 1:</strong> The error 'ERROR! Cannot compile' from nvdiffrast indicates missing CUDA compilation dependencies or incorrect environment setup. Since PyTorch is already installed with CUDA, the fix is to install nvdiffrast directly from the GitHub repository using pip with the `#egg` flag, bypassing the build step that failed. This approach ensures the package is fetched correctly and its dependencies are resolved. The inference command remains unchanged.</div><div class="fix-item"><strong>Fix 2:</strong> The error occurred because gcc was not found or misconfigured when trying to compile nvdiffrast. By setting CUDA_HOME to the CUDA installation path, the build system can locate the necessary CUDA headers and compilers. No change was needed for the inference command.</div><div class="fix-item"><strong>Fix 3:</strong> The error is due to nvdiffrast failing to compile, which may be caused by missing CUDA toolkit or incompatible environment. Ensure that CUDA_HOME is correctly set to /usr/local/cuda and that the CUDA toolkit (including nvcc) is properly installed. The fixed steps are the same as before but may require manual verification that the CUDA installation is complete. The inference command remains unchanged.</div></div>
+
+  
+    <h2>Error Log</h2>
+    <div class="card">
+      <div class="err-block">Install errors:
+SSH command failed:
+Warning: Permanently added '[213.173.105.4]:30163' (ED25519) to the list of known hosts.
+  Running command git clone --filter=blob:none --quiet https://github.com/NVlabs/nvdiffrast/ /tmp/pip-req-build-bhr511r4
+  error: subprocess-exited-with-error
+  
+  × Getting requirements to build wheel did not run successfully.
+  │ exit code: 1
+  ╰─> [10 lines of output]
+      
+      
+      **********************************************************************
+      ERROR! Cannot compile 
+SSH command failed:
+Warning: Permanently added '[213.173.105.4]:30163' (ED25519) to the list of known hosts.
+  Running command git clone --filter=blob:none --quiet https://github.com/NVlabs/nvdiffrast.git /tmp/pip-install-ww9cy87f/nvdiffrast_0285e30e43c84e48ba9cee4ebfe7efa1
+  error: subprocess-exited-with-error
+  
+  × Getting requirements to build wheel did not run successfully.
+  │ exit code: 1
+  ╰─> [10 lines of output]
+      
+      
+      ******************************************************
+
+Command '['scp', '-i', '/tmp/tmpujeqrp7i/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '30163', '-r', 'root@213.173.105.4:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/InstantMesh-1780190127/']' returned non-zero exit status 1.</div>
+    </div>
+
+  <div style="display:flex;justify-content:space-between;margin-top:24px;font-size:12px;">
+    <a href="../map-anything-1780189227/index.html">← map-anything-1780189227</a><span></span>
+  </div>
+</div>
+</body></html>

@@ -1,5 +1,57 @@
 [
   {
+    "job_name": "InstantMesh-1780190127",
+    "repo_full_name": "TencentARC/InstantMesh",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/openclaw-inputs/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 328,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "The error 'ERROR! Cannot compile' from nvdiffrast indicates missing CUDA compilation dependencies or incorrect environment setup. Since PyTorch is already installed with CUDA, the fix is to install nvdiffrast directly from the GitHub repository using pip with the `#egg` flag, bypassing the build step that failed. This approach ensures the package is fetched correctly and its dependencies are resolved. The inference command remains unchanged.",
+      "The error occurred because gcc was not found or misconfigured when trying to compile nvdiffrast. By setting CUDA_HOME to the CUDA installation path, the build system can locate the necessary CUDA headers and compilers. No change was needed for the inference command.",
+      "The error is due to nvdiffrast failing to compile, which may be caused by missing CUDA toolkit or incompatible environment. Ensure that CUDA_HOME is correctly set to /usr/local/cuda and that the CUDA toolkit (including nvcc) is properly installed. The fixed steps are the same as before but may require manual verification that the CUDA installation is complete. The inference command remains unchanged."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch==2.1.0+cu121 torchvision==0.16.0+cu121 --extra-index-url https://download.pytorch.org/whl/cu121",
+      "needs_h100": false,
+      "estimated_vram_gb": 24,
+      "install_steps": [
+        "pip install -r requirements.txt",
+        "export CUDA_HOME=/usr/local/cuda",
+        "pip install git+https://github.com/NVlabs/nvdiffrast.git#egg=nvdiffrast"
+      ],
+      "input_flag": "--image",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "python run.py configs/instant-mesh-large.yaml /workspace/inputs/SG_Stadium.png --save_video --output_dir /workspace/outputs",
+      "output_formats": [
+        "obj"
+      ],
+      "notes": "Model weights auto-downloaded on first run. Ensure input image has a clear foreground object.",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "Install errors:\nSSH command failed:\nWarning: Permanently added '[213.173.105.4]:30163' (ED25519) to the list of known hosts.\n  Running command git clone --filter=blob:none --quiet https://github.com/NVlabs/nvdiffrast/ /tmp/pip-req-build-bhr511r4\n  error: subprocess-exited-with-error\n  \n  \u00d7 Getting requirements to build wheel did not run successfully.\n  \u2502 exit code: 1\n  \u2570\u2500> [10 lines of output]\n      \n      \n      **********************************************************************\n      ERROR! Cannot compile \nSSH command failed:\nWarning: Permanently added '[213.173.105.4]:30163' (ED25519) to the list of known hosts.\n  Running command git clone --filter=blob:none --quiet https://github.com/NVlabs/nvdiffrast.git /tmp/pip-install-ww9cy87f/nvdiffrast_0285e30e43c84e48ba9cee4ebfe7efa1\n  error: subprocess-exited-with-error\n  \n  \u00d7 Getting requirements to build wheel did not run successfully.\n  \u2502 exit code: 1\n  \u2570\u2500> [10 lines of output]\n      \n      \n      ******************************************************\n\nCommand '['scp', '-i', '/tmp/tmpujeqrp7i/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '30163', '-r', 'root@213.173.105.4:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/InstantMesh-1780190127/']' returned non-zero exit status 1.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/InstantMesh-1780190127",
+    "cost_usd": 0.163,
+    "variant": "test",
+    "reason": "With 4,396 stars and a recent push on January 3, 2025, this repo is worth running now as a high-quality, actively maintained solution for single-image 3D mesh generation, and your first-time discovery of it signals it\u2019s a timely addition to your pipeline.",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-05-31T01:20:56.581246+00:00",
+    "timestamp_human": "May 31 2026, 01:20"
+  },
+  {
     "job_name": "map-anything-1780189227",
     "repo_full_name": "facebookresearch/map-anything",
     "repo_url": "",
