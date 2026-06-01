@@ -1,5 +1,62 @@
 [
   {
+    "job_name": "InstantMesh-1780275624",
+    "repo_full_name": "TencentARC/InstantMesh",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/openclaw-inputs/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 800,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "The original setup failed because conda was not in PATH on the RunPod instance. Fixed by adding `export PATH=/opt/conda/bin:$PATH` to locate conda. Additionally, the nvdiffrast build error occurred because its build dependencies (C++ compiler, CUDA toolkit headers) were missing; installing via `pip install git+https://github.com/NVlabs/nvdiffrast.git` ensures the wheel is fetched properly, and Ninja is installed from conda-forge to help with compilation. The inference command was also updated to specify an output directory to avoid permission issues.",
+      "The errors stemmed from two issues: (1) The conda command was not found because the initial `export PATH=/opt/conda/bin:$PATH` was not persisted for subsequent commands, and `conda activate` requires the shell to be properly initialized (now done with `source /opt/conda/etc/profile.d/conda.sh` before activation). (2) The nvdiffrast build failed due to missing CUDA compilation tools; adding `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64` ensures the CUDA libraries are found. The inference command was updated to use `conda run -n instantmesh` to run directly in the conda environment without needing a login shell, avoiding activation issues in a non-interactive session.",
+      "The error 'conda: command not found' and missing conda.sh suggest that Conda is not installed or not properly initialized in the RunPod environment. The fix uses the existing conda installation (typically at /opt/conda) but ensures the shell profile is sourced before activation. The nvdiffrast compilation error is avoided by using pip instead of conda for Ninja. The inference command now includes sourcing conda.sh and activating the environment within the same shell session."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu121",
+      "needs_h100": false,
+      "estimated_vram_gb": 24,
+      "install_steps": [
+        "conda create --name instantmesh python=3.10 -y",
+        "source /opt/conda/etc/profile.d/conda.sh && conda activate instantmesh",
+        "pip install -U pip",
+        "pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu121",
+        "pip install xformers==0.0.22.post7 --index-url https://download.pytorch.org/whl/cu121",
+        "pip install -r requirements.txt",
+        "pip install git+https://github.com/NVlabs/nvdiffrast.git"
+      ],
+      "input_flag": "--config",
+      "input_path": "/workspace/inputs/SG_Stadium.png",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "source /opt/conda/etc/profile.d/conda.sh && conda activate instantmesh && python run.py configs/instant-mesh-large.yaml /workspace/inputs/SG_Stadium.png --save_video --output_dir /workspace/outputs",
+      "output_formats": [
+        "obj",
+        "video"
+      ],
+      "notes": "By default exports .obj mesh with vertex colors. Use --export_texmap for texture map (longer). Use --no_rembg if input already has alpha mask.",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "Install errors:\nSSH command failed:\nWarning: Permanently added '[216.81.245.83]:46552' (ED25519) to the list of known hosts.\nbash: line 1: conda: command not found\n\nSSH command failed:\nWarning: Permanently added '[216.81.245.83]:46552' (ED25519) to the list of known hosts.\nbash: line 1: /opt/conda/etc/profile.d/conda.sh: No such file or directory\n\nSSH command failed:\nWarning: Permanently added '[216.81.245.83]:46552' (ED25519) to the list of known hosts.\n  Running command git clone --filter=blob:none --quiet https://github.com/NVlabs/nvdiffrast/ /tmp/pip-req-build-6q4jrqy6\n  error: subprocess-exited-with-error\n  \n  \u00d7 Getting requirements to build wheel did not run successfully.\n  \u2502 exit code: 1\n  \u2570\u2500> [10 lines of output]\n      \n      \n      **********************************************************************\n      ERROR! Cannot compile \nSSH command failed:\nWarning: Permanently added '[216.81.245.83]:46552' (ED25519) to the list of known hosts.\n  Running command git clone --filter=blob:none --quiet https://github.com/NVlabs/nvdiffrast.git /tmp/pip-req-build-jufl6xzx\n  error: subprocess-exited-with-error\n  \n  \u00d7 Getting requirements to build wheel did not run successfully.\n  \u2502 exit code: 1\n  \u2570\u2500> [10 lines of output]\n      \n      \n      **********************************************************************\n      ERROR! Cannot compi\n\nCommand '['scp', '-i', '/tmp/tmp0lu45o23/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '46552', '-r', 'root@216.81.245.83:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/InstantMesh-1780275624/']' returned non-zero exit status 1.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/InstantMesh-1780275624",
+    "cost_usd": 0.398,
+    "variant": "test",
+    "reason": "With 4,398 stars and a January 3, 2025 push, InstantMesh is a timely, high-impact solution for generating 3D meshes from a single image, making it a strong candidate for your pipeline's first evaluation.",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-06-01T01:13:45.714731+00:00",
+    "timestamp_human": "Jun 01 2026, 01:13"
+  },
+  {
     "job_name": "dreamgaussian-sg-stadium",
     "repo_full_name": "dreamgaussian/dreamgaussian",
     "repo_url": "https://github.com/dreamgaussian/dreamgaussian",
