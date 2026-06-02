@@ -1,5 +1,46 @@
 [
   {
+    "job_name": "InstantMesh-1780366589",
+    "repo_full_name": "TencentARC/InstantMesh",
+    "repo_url": "https://github.com/TencentARC/InstantMesh",
+    "repo_stars": 4400,
+    "input_files": [
+      "/home/ubuntu/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100-SXM4-80GB",
+    "success": true,
+    "duration_sec": 152,
+    "fix_attempts": 5,
+    "fix_summaries": [
+      "Install miniconda for conda commands",
+      "conda\u2192pip conversion for faster setup",
+      "nvdiffrast --no-build-isolation fix",
+      "PyTorch version mismatch (2.4.1 base vs 2.1.0 README)",
+      "Recompiled nvdiffrast after PyTorch downgrade"
+    ],
+    "cfg": {
+      "install_steps": [],
+      "inference_cmd": "python run.py configs/instant-mesh-large.yaml INPUT_PATH --export_texmap"
+    },
+    "error_log": "",
+    "output_files": [
+      "/home/ubuntu/openclaw-outputs/InstantMesh-1780366589/meshes/input.obj",
+      "/home/ubuntu/openclaw-outputs/InstantMesh-1780366589/meshes/input.png",
+      "/home/ubuntu/openclaw-outputs/InstantMesh-1780366589/meshes/input.mtl"
+    ],
+    "output_dir": "/home/ubuntu/openclaw-outputs/InstantMesh-1780366589",
+    "cost_usd": 0.08,
+    "variant": "test",
+    "reason": "Manual InstantMesh test \u2014 adapted deps for base PyTorch 2.4.1+cu124",
+    "hf_dataset": "",
+    "hf_subfolder": "",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-06-02T03:18:29.878935+00:00",
+    "timestamp_human": "Jun 02 2026, 03:18"
+  },
+  {
     "job_name": "TripoSplat-1780369878",
     "repo_full_name": "VAST-AI-Research/TripoSplat",
     "repo_url": "",
