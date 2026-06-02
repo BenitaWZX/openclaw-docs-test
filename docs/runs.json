@@ -1,5 +1,46 @@
 [
   {
+    "job_name": "TripoSplat-1780370513",
+    "repo_full_name": "VAST-AI-Research/TripoSplat",
+    "repo_url": "https://github.com/VAST-AI-Research/TripoSplat",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100-SXM4-80GB",
+    "success": true,
+    "duration_sec": 181,
+    "fix_attempts": 0,
+    "fix_summaries": [],
+    "cfg": {
+      "install_steps": [
+        "pip install numpy safetensors pillow tqdm huggingface_hub",
+        "hf download VAST-AI/TripoSplat --local-dir ckpts/"
+      ],
+      "inference_cmd": "python run_example.py --image_path INPUT_PATH --output_dir OUTPUT_DIR"
+    },
+    "error_log": "",
+    "output_files": [
+      "/home/ubuntu/openclaw-outputs/TripoSplat-1780370513/output.ply",
+      "/home/ubuntu/openclaw-outputs/TripoSplat-1780370513/output.splat",
+      "/home/ubuntu/openclaw-outputs/TripoSplat-1780370513/output_32768.ply",
+      "/home/ubuntu/openclaw-outputs/TripoSplat-1780370513/output_65536.ply",
+      "/home/ubuntu/openclaw-outputs/TripoSplat-1780370513/output_131072.ply",
+      "/home/ubuntu/openclaw-outputs/TripoSplat-1780370513/output_262144.ply"
+    ],
+    "output_dir": "/home/ubuntu/openclaw-outputs/TripoSplat-1780370513",
+    "cost_usd": 0.09,
+    "variant": "test",
+    "reason": "Manual TripoSplat test \u2014 minimal deps, just pip + hf download, then run_example.py",
+    "hf_dataset": "",
+    "hf_subfolder": "",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-06-02T03:22:20.490335+00:00",
+    "timestamp_human": "Jun 02 2026, 03:22"
+  },
+  {
     "job_name": "InstantMesh-1780366589",
     "repo_full_name": "TencentARC/InstantMesh",
     "repo_url": "https://github.com/TencentARC/InstantMesh",
