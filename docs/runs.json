@@ -1,5 +1,61 @@
 [
   {
+    "job_name": "InstantMesh-1780367867",
+    "repo_full_name": "TencentARC/InstantMesh",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 152,
+    "fix_attempts": 1,
+    "fix_summaries": [
+      "The error occurred because the install steps did not include '-y' flags for conda commands, causing interactive prompts that failed in a non-interactive SSH session. Additionally, input/output directories might not exist. Added 'mkdir -p' to ensure they exist. The inference command itself was correct and did not need changes."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu121",
+      "needs_h100": false,
+      "estimated_vram_gb": 24,
+      "install_steps": [
+        "conda create --name instantmesh python=3.10 -y",
+        "conda activate instantmesh",
+        "pip install -U pip",
+        "conda install Ninja -y",
+        "pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu121",
+        "pip install xformers==0.0.22.post7",
+        "pip install -r requirements.txt",
+        "mkdir -p /workspace/inputs /workspace/outputs"
+      ],
+      "input_flag": "--image",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "python run.py configs/instant-mesh-large.yaml /workspace/inputs/SG_Stadium.png --save_video --output /workspace/outputs",
+      "output_formats": [
+        "obj",
+        "video"
+      ],
+      "notes": "The README uses configs/instant-mesh-large.yaml and an example image path (examples/hatsune_miku.png). Replaced with /workspace/inputs/SG_Stadium.png. Output directory set via --output flag; only .obj and video are explicitly mentioned as default outputs.",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "SSH command failed:\nWarning: Permanently added '[185.216.23.244]:32875' (ED25519) to the list of known hosts.\n\n\nSSH command failed:\nWarning: Permanently added '[185.216.23.244]:32875' (ED25519) to the list of known hosts.\nConnection to 185.216.23.244 closed by remote host.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/InstantMesh-1780367867",
+    "cost_usd": 0.076,
+    "variant": "test",
+    "reason": "InstantMesh v6",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-06-02T02:40:19.512091+00:00",
+    "timestamp_human": "Jun 02 2026, 02:40"
+  },
+  {
     "job_name": "InstantMesh-1780367739",
     "repo_full_name": "TencentARC/InstantMesh",
     "repo_url": "",
