@@ -266,6 +266,8 @@
             <select id="modelSelector" style="background:transparent;color:inherit;border:none;font-size:12px;width:100%;cursor:pointer;">
               <option value="https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/sgstadium_v2.glb">sgstadium_v2.glb (Extend3D)</option>
               <option value="https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/dreamgaussian_sg_stadium.glb">dreamgaussian_sg_stadium.glb (DreamGaussian)</option>
+              <option value="https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/instantmesh_sg_stadium.obj">instantmesh_sg_stadium.obj (InstantMesh)</option>
+              <option value="https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/triposplat_sg_stadium.splat">triposplat_sg_stadium.splat (TripoSplat)</option>
             </select>
           </div>
 
@@ -367,6 +369,7 @@
       <button class="nav-btn" id="gotoJP_Tokyo">Tokyo, JP</button>
       <button class="nav-btn" id="gotoGLBSite" style="background-color:#005e95; color:white;">GLB Site</button>
       <button class="nav-btn" id="btnSavePos" style="background-color:#2e7d32; color:white; margin-left:4px;">💾 Save Position</button>
+      <button class="nav-btn" id="clearSavedBtn" style="background-color:#8b3a3a; color:white; margin-left:4px;">🗑 Clear</button>
     </div>
 
     <div id="viewDiv" class="esri-widget">
@@ -779,7 +782,16 @@ const [
         if (!raw) return;
         try {
           const state = JSON.parse(raw);
-          if (state.modelUrl !== HARDCODED_MODEL_URL) return;
+          // Restore the model selector to saved model
+          const sel = document.getElementById('modelSelector');
+          if (sel && state.modelUrl) {
+            for (let i = 0; i < sel.options.length; i++) {
+              if (sel.options[i].value === state.modelUrl) {
+                sel.selectedIndex = i;
+                break;
+              }
+            }
+          }
           document.getElementById('sliderScale').value    = state.scale;
           document.getElementById('valScale').textContent    = state.scale;
           document.getElementById('sliderHeading').value  = state.heading;
@@ -799,7 +811,15 @@ const [
         }
       }
 
+      // Also bind the clear button if it exists
       document.getElementById('btnSavePos').addEventListener('click', saveModelPosition);
+      const clearBtn = document.getElementById('clearSavedBtn');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', function() {
+          localStorage.removeItem('glbModelState');
+          alert('🗑 Saved position cleared');
+        });
+      }
 
       // Auto-restore on page load (delayed until map+model are ready)
       setTimeout(loadModelPosition, 2000);
