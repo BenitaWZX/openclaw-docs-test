@@ -266,8 +266,7 @@
             <select id="modelSelector" style="background:transparent;color:inherit;border:none;font-size:12px;width:100%;cursor:pointer;">
               <option value="https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/sgstadium_v2.glb">sgstadium_v2.glb (Extend3D)</option>
               <option value="https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/dreamgaussian_sg_stadium.glb">dreamgaussian_sg_stadium.glb (DreamGaussian)</option>
-              <option value="https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/instantmesh_sg_stadium.obj">instantmesh_sg_stadium.obj (InstantMesh)</option>
-              <option value="https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/triposplat_sg_stadium.splat">triposplat_sg_stadium.splat (TripoSplat)</option>
+              <!-- OBJ and splat removed: ArcGIS ObjectSymbol3DLayer only supports GLB/glTF -->
             </select>
           </div>
 
@@ -803,7 +802,11 @@ const [
           currentRotation  = state.rotation || 0;
           nudgeOffsetLng   = state.nudgeLng || 0;
           nudgeOffsetLat   = state.nudgeLat || 0;
-          updateNudgeDisplay();
+          // Update nudge display inline (no standalone updateNudgeDisplay function)
+          const dLng = nudgeOffsetLng >= 0 ? '+' + nudgeOffsetLng.toFixed(5) : nudgeOffsetLng.toFixed(5);
+          const dLat = nudgeOffsetLat >= 0 ? '+' + nudgeOffsetLat.toFixed(5) : nudgeOffsetLat.toFixed(5);
+          const nudgEl = document.getElementById('nudgeOffsetVal');
+          if (nudgEl) nudgEl.textContent = `Δlng ${dLng}\nΔlat ${dLat}`;
           if (typeof loadModel === 'function') loadModel();
           console.log('📐 Position restored from saved state');
         } catch(e) {
@@ -823,6 +826,9 @@ const [
 
       // Auto-restore on page load (delayed until map+model are ready)
       setTimeout(loadModelPosition, 2000);
+
+      // Load default model on page load (even without saved state)
+      setTimeout(loadModel, 3000);
 
     </script>
   </body>
