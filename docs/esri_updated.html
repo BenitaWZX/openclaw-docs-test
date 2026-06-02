@@ -436,10 +436,10 @@ const [
       const lyrgeo_MY1 = new GeoJSONLayer({ url: "data/geojson/land/MY_PlaceOfWorship_data_3693_P.geojson", copyright: "Places of Worship", popupTemplate: templatePOW, rendererPOW, orderBy: { field: "poi_name" } });
 
       /* ── Basemap layers ───────────────────────────────────────────────────── */
-      const lyrraster_OSM_Road      = new WebTileLayer({ urlTemplate: "http://47.129.192.66:8000/OSM/{z}/{y}/{z}_y{y}_x{x}.png",                   copyright: "Local OSM tiles" });
-      const lyrraster_Google_Aerial = new WebTileLayer({ urlTemplate: "http://47.129.192.66:8000/GoogleMap_Aerial/{z}/{y}/{z}_y{y}_x{x}.jpg",       copyright: "Local Google Aerial tiles" });
-      const lyrraster_Google_Road   = new WebTileLayer({ urlTemplate: "http://47.129.192.66:8000/GoogleMap_Road/{z}/{y}/{z}_y{y}_x{x}.png",         copyright: "Local Google Road tiles" });
-      const lyrraster_ArcGIS_Aerial = new WebTileLayer({ urlTemplate: "http://47.129.192.66:8000/ArcGIS_WorldImagery/{z}/{y}/{z}_y{y}_x{x}.jpg",    copyright: "Local ArcGIS tiles" });
+      const lyrraster_OSM_Road      = new WebTileLayer({ urlTemplate: "http://13.212.44.186:8000/OSM/{z}/{y}/{z}_y{y}_x{x}.png",                   copyright: "Local OSM tiles" });
+      const lyrraster_Google_Aerial = new WebTileLayer({ urlTemplate: "http://13.212.44.186:8000/GoogleMap_Aerial/{z}/{y}/{z}_y{y}_x{x}.jpg",       copyright: "Local Google Aerial tiles" });
+      const lyrraster_Google_Road   = new WebTileLayer({ urlTemplate: "http://13.212.44.186:8000/GoogleMap_Road/{z}/{y}/{z}_y{y}_x{x}.png",         copyright: "Local Google Road tiles" });
+      const lyrraster_ArcGIS_Aerial = new WebTileLayer({ urlTemplate: "http://13.212.44.186:8000/ArcGIS_WorldImagery/{z}/{y}/{z}_y{y}_x{x}.jpg",    copyright: "Local ArcGIS tiles" });
 
       const basemaps = [
         { id: "arcgis-satellite",     label: "ArcGIS Satellite",sublabel: "Online",      thumbImg: "images/imageProvider/esriArcGIS_Aerial.png", create: () => new Basemap({ baseLayers: [lyrraster_ArcGIS_Aerial] }) },
