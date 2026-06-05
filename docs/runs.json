@@ -1,5 +1,64 @@
 [
   {
+    "job_name": "DreamCraft3D-1780621229",
+    "repo_full_name": "deepseek-ai/DreamCraft3D",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/openclaw-inputs/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 497,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "The error was a ModuleNotFoundError for 'pytorch_lightning', meaning the required package was missing from the installation. Although requirements.txt likely includes it, the virtual environment may have been activated after installing PyTorch but before installing requirements, and the order or missing dependency caused it not to be installed. The fix adds an explicit installation of pytorch-lightning==1.9.0 (compatible with PyTorch 1.12.1 and the DreamCraft3D code) before installing requirements.txt, ensuring it is available. The inference command remains unchanged because it was correct.",
+      "The error was `ModuleNotFoundError: No module named 'pytorch_lightning'` because the virtual environment was not activated when running the inference command. The user had activated the environment during installation but not when executing the command. I added `. venv/bin/activate && ` before the python launch commands to ensure the virtual environment is active.",
+      "The error 'venv/bin/activate: No such file or directory' occurred because the dot (.) command is not valid in bash to source a script; it should be 'source' instead. I fixed the activation command from '. venv/bin/activate' to 'source venv/bin/activate' in both the install steps and the inference command. Additionally, the install steps had a 'cd load/zero123' but no return to the project root before the next command, so I added 'cd ../../load/omnidata' to ensure proper paths. Also, the inference command originally had a typo with the dot activation, which is now corrected."
+    ],
+    "cfg": {
+      "python_version": "3.8",
+      "cuda_version": "11.3",
+      "pytorch_install": "pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113",
+      "needs_h100": false,
+      "estimated_vram_gb": 40,
+      "install_steps": [
+        "python3 -m virtualenv venv",
+        "source venv/bin/activate",
+        "python3 -m pip install --upgrade pip",
+        "pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113",
+        "pip install ninja",
+        "pip install pytorch-lightning==1.9.0",
+        "pip install -r requirements.txt",
+        "cd load/zero123 && bash download.sh",
+        "cd ../../load/omnidata && gdown '1Jrh-bRnJEjyMCS7f-WsaFlccfPjJPPHI&confirm=t'",
+        "gdown '1wNxVO4vVbDEMEpnAi_jwQObf2MFodcBR&confirm=t'"
+      ],
+      "input_flag": "--image_path",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "source venv/bin/activate && python launch.py --config configs/dreamcraft3d-coarse-nerf.yaml --train system.prompt_processor.prompt='a brightly colored mushroom growing on a log' data.image_path=/workspace/inputs/SG_Stadium.png && python launch.py --config configs/dreamcraft3d-coarse-neus.yaml --train system.prompt_processor.prompt='a brightly colored mushroom growing on a log' data.image_path=/workspace/inputs/SG_Stadium.png system.weights=outputs/dreamcraft3d-coarse-nerf/'a brightly colored mushroom growing on a log'@LAST/ckpts/last.ckpt",
+      "output_formats": [
+        "obj"
+      ],
+      "notes": "",
+      "docker_image": "runpod/pytorch:2.0.1-py3.10-cuda11.8.0-devel-ubuntu22.04"
+    },
+    "error_log": "SSH command failed:\nWarning: Permanently added '[154.54.102.39]:10295' (ED25519) to the list of known hosts.\nbash: line 1: venv/bin/activate: No such file or directory\n\n\nCommand '['scp', '-i', '/tmp/tmpt5awqjgu/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '10295', '-r', 'root@154.54.102.39:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/DreamCraft3D-1780621229/']' returned non-zero exit status 1.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/DreamCraft3D-1780621229",
+    "cost_usd": 0.247,
+    "variant": "test",
+    "reason": "With 3,006 stars and a push just hours ago on April 22, 2025, this ICLR 2024 implementation is highly active and credible, making it worth running now for a 3D reconstruction pipeline seeking state-of-the-art hierarchical generation.",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-06-05T01:08:46.908748+00:00",
+    "timestamp_human": "Jun 05 2026, 01:08"
+  },
+  {
     "job_name": "TripoSplat-1780370513",
     "repo_full_name": "VAST-AI-Research/TripoSplat",
     "repo_url": "https://github.com/VAST-AI-Research/TripoSplat",
