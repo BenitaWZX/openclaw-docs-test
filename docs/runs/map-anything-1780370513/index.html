@@ -94,9 +94,14 @@
 
   <h2>View in 3D</h2>
   <div class="card" style="padding:12px 16px;">
-    <a href="https://antimatter15.github.io/splat/?url=https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/mapanything_sg_stadium.ply" target="_blank" style="display:inline-block;background:var(--accent);color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;text-decoration:none;margin:4px;">👁 View mapanything_sg_stadium.ply</a>
-    <a href="https://antimatter15.github.io/splat/?url=https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/mapanything_sg_stadium_32k.ply" target="_blank" style="display:inline-block;background:var(--accent);color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;text-decoration:none;margin:4px;">👁 View mapanything_sg_stadium_32k.ply</a>
-    <h2>Mapping Viewer</h2><div class="card"><a href="http://13.212.44.186:8000/esri_updated.html" target="_blank" style="display:inline-block;background:var(--accent);color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">🗺 Open Mapping Viewer</a><p style="font-size:11px;color:var(--text2);margin-top:8px;">View the 3D model overlaid on map tiles. Requires the CORS server to be running.</p></div>
+    <p style="font-size:12px;color:var(--text1);margin-bottom:10px;">Three.js point cloud viewer — supports bare PLY (x,y,z only). Orbit, zoom, pan.</p>
+    <a href="viewer.html?url=https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/mapanything_sg_stadium_32k.ply" target="_blank" style="display:inline-block;background:var(--accent);color:#fff;padding:8px 20px;border-radius:6px;font-size:13px;text-decoration:none;margin:4px;">👁 Open Point Cloud Viewer</a>
+    <p style="font-size:11px;color:var(--text2);margin-top:8px;">Uses the 32k-point version for faster loading. <a href="viewer.html?url=https://huggingface.co/datasets/Bwzx/3d-reconstructions/resolve/main/mapanything_sg_stadium.ply" target="_blank">Load full 265k version</a></p>
+  </div>
+  <div class="card">
+    <h3>Mapping Viewer</h3>
+    <a href="http://13.212.44.186:8000/esri_updated.html" target="_blank" style="display:inline-block;background:var(--accent);color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">🗺 Open Mapping Viewer</a>
+    <p style="font-size:11px;color:var(--text2);margin-top:8px;">View the 3D model overlaid on map tiles. Requires the CORS server to be running.</p>
   </div>
 
   <div style="display:flex;justify-content:space-between;margin-top:24px;font-size:12px;">
