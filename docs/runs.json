@@ -1,5 +1,59 @@
 [
   {
+    "job_name": "Pixal3D-1782262831",
+    "repo_full_name": "TencentARC/Pixal3D",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/openclaw-inputs/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "H100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 392,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "The original error was likely caused by the NATTEN install not specifying correct CUDA architecture (e.g., 8.0 for A100, 9.0 for H100) and worker count, leading to a build failure or runtime error. Additionally, the inference command was missing the --device cuda flag, which might default to CPU. Added pynvml to avoid potential GPU monitoring errors. Fixed the NATTEN install with appropriate architecture and workers for A100/H100 (e.g., 8.0 for A100, adjust to 9.0 for H100).",
+      "The error occurred because the NATTEN_CUDA_ARCH was set to 8.0 (for A100), but the pod was using an H100 GPU (architecture 9.0). When compiling natten, the CUDA architecture must match the GPU. The install step was fixed to use \"9.0\" for H100. The inference command remained correct as-is.",
+      "The failure was due to missing dependencies required by Pixal3D: `ninja` for compilation, `torch-scatter` for scatter operations, and the locally built `pointnet2_ops_lib` (needs to be compiled first). Also set `PYTHONPATH=.` to ensure the repo modules are importable. The original install steps lacked these critical components, causing runtime import errors or segmentation faults during inference on A/H100 GPUs."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch torchvision",
+      "needs_h100": true,
+      "estimated_vram_gb": 48,
+      "install_steps": [
+        "pip install ninja && pip install -r requirements.txt",
+        "NATTEN_CUDA_ARCH=\"9.0\" NATTEN_N_WORKERS=8 pip install natten==0.21.0 --no-build-isolation",
+        "pip install https://github.com/LDYang694/Storages/releases/download/20260430/utils3d-0.0.2-py3-none-any.whl",
+        "pip install torch-scatter -f https://data.pyg.org/whl/torch-2.1.0+cu121.html",
+        "pip install pointnet2_ops_lib/."
+      ],
+      "input_flag": "--image",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "PYTHONPATH=. CUDA_VISIBLE_DEVICES=0 python inference.py --image /workspace/inputs/SG_Stadium.png --output /workspace/outputs/output.glb --device cuda",
+      "output_formats": [
+        "glb"
+      ],
+      "notes": "The README refers to TRELLIS.2 as a prerequisite for installation (base env setup). For low VRAM, use the --low_vram flag (default resolution 1024, standard 1536). If flash_attn is not installed, set ATTN_BACKEND=sdpa. Inference generates a GLB file.",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "SSH command failed:\nWarning: Permanently added '[64.247.201.34]:16024' (ED25519) to the list of known hosts.\n\n\nCommand '['scp', '-i', '/tmp/tmpv98subj1/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '16024', '-r', 'root@64.247.201.34:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/Pixal3D-1782262831/']' returned non-zero exit status 1.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/Pixal3D-1782262831",
+    "cost_usd": 0.293,
+    "variant": "test",
+    "reason": "With 1,816 stars and a 11.7% growth since last run, Pixal3D is worth running now as a cutting-edge SIGGRAPH 2026 paper that was recently updated, offering a high-quality, pixel-aligned 3D generation method that could directly enhance your reconstruction pipeline.",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-06-24T01:07:04.351859+00:00",
+    "timestamp_human": "Jun 24 2026, 01:07"
+  },
+  {
     "job_name": "DreamCraft3D-1780621229",
     "repo_full_name": "deepseek-ai/DreamCraft3D",
     "repo_url": "",
