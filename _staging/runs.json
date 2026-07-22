@@ -1,5 +1,58 @@
 [
   {
+    "job_name": "Pixal3D-1784682032",
+    "repo_full_name": "TencentARC/Pixal3D",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/openclaw-inputs/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 861,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "The original NATTEN install step used placeholder strings 'xx' for both CUDA_ARCH and N_WORKERS, which are not valid integers and would cause the compilation to fail. The fix auto-detects the GPU compute capability (typically 8.0 for A100/H100) and sets a reasonable number of workers (8). Added a diagnostic CUDA check step to ensure the environment is properly configured before building natten.",
+      "The original error message was empty (only the SSH warning), indicating the pod likely failed before execution or there was a silent failure in natten installation due to CUDA architecture mismatch. For A100 (compute capability 8.0) or H100 (compute capability 9.0), the NATTEN_CUDA_ARCH must match the GPU. The fix ensures that the NATTEN_CUDA_ARCH is set correctly: 8.0 for A100, or 9.0 for H100. If the user is on an H100, change to '9.0'. Additionally, the inference command and install steps are otherwise correct; the primary issue is ensuring the right CUDA architecture flag is used for natten compilation. The provided steps remain unchanged but are validated for an A100; for H100, the arch should be set to 9.0.",
+      "The original NATTEN installation used NATTEN_CUDA_ARCH and NATTEN_N_WORKERS environment variables which are not recognized by the natten build system. The correct variables are FORCE_CUDA=1 to force CUDA compilation and TORCH_CUDA_ARCH_LIST to specify target architectures. Also, the inference command may fail due to missing PYTHONPATH for module imports, so we set PYTHONPATH to include the Pixal3D directory. No other changes were needed as CUDA is available and PyTorch is pre-installed."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch torchvision",
+      "needs_h100": false,
+      "estimated_vram_gb": 24,
+      "install_steps": [
+        "pip install -r requirements.txt",
+        "python -c \"import torch; print('CUDA available:', torch.cuda.is_available()); v=torch.cuda.get_device_capability(); print(f'Compute capability: {v[0]}.{v[1]}')\"",
+        "FORCE_CUDA=1 TORCH_CUDA_ARCH_LIST=\"8.0\" pip install natten==0.21.0 --no-build-isolation",
+        "pip install https://github.com/LDYang694/Storages/releases/download/20260430/utils3d-0.0.2-py3-none-any.whl"
+      ],
+      "input_flag": "--image",
+      "input_path": "/workspace/inputs/SG_Stadium.png",
+      "output_path": "/workspace/outputs/output.glb",
+      "inference_cmd": "PYTHONPATH=/workspace/Pixal3D:$PYTHONPATH python inference.py --image /workspace/inputs/SG_Stadium.png --output /workspace/outputs/output.glb",
+      "output_formats": [
+        "glb"
+      ],
+      "notes": "The README instructs to first follow the TRELLIS.2 installation guide to set up the base environment, which is not included in the install steps extracted from this repo's README. The output format is GLB mesh.",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "SSH command failed:\nWarning: Permanently added '[154.54.102.54]:15452' (ED25519) to the list of known hosts.\n\n\nCommand '['scp', '-i', '/tmp/tmp40dxcguy/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '15452', '-r', 'root@154.54.102.54:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/Pixal3D-1784682032/']' returned non-zero exit status 1.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/Pixal3D-1784682032",
+    "cost_usd": 0.428,
+    "variant": "test",
+    "reason": "With 2,009 stars and a 10.6% growth since last run, this SIGGRAPH 2026 paper code is freshly updated and gaining traction, making it timely for evaluating pixel-aligned 3D reconstruction from images.",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-07-22T01:14:54.770120+00:00",
+    "timestamp_human": "Jul 22 2026, 01:14"
+  },
+  {
     "job_name": "map-anything-1784336435",
     "repo_full_name": "facebookresearch/map-anything",
     "repo_url": "",
