@@ -1,5 +1,60 @@
 [
   {
+    "job_name": "img2threejs-1784768432",
+    "repo_full_name": "hoainho/img2threejs",
+    "repo_url": "https://github.com/hoainho/img2threejs",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/openclaw-inputs/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "duration_sec": 342,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "The original install step cloned the repo into ~/.claude/skills/img2threejs but the inference command expected to run from that directory, which was missing pip dependencies. I fixed the install steps to clone into /workspace/img2threejs and install the project's requirements. The inference command now explicitly cd's into /workspace/img2threejs before running the pipeline, ensuring all modules and relative imports resolve correctly.",
+      "The original inference command failed because the input image file /workspace/inputs/SG_Stadium.png did not exist. The model and its dependencies were likely not installed correctly because the environment lacked the required PyTorch version (CUDA 12.1 was missing). Fixed by explicitly installing PyTorch with CUDA support and proceeding with the standard requirements. Also added a sample download step for the input image. The inference command itself is correct; the issue was the missing input and missing CUDA torch.",
+      "The original inference command wrote intermediate files (assessment.json, spec.json) to the current directory, but the default working directory may not be /workspace/img2threejs or the directory might not be writable. I changed the paths of these intermediate outputs to /workspace/outputs to ensure they are stored in a writable and persistent location. Additionally, I added a mkdir step in the install to guarantee the input and output directories exist, and I ensured the download command uses the same structure as the repo's example."
+    ],
+    "cfg": {
+      "python_version": "3.10+",
+      "cuda_version": "12.1.1",
+      "pytorch_install": "pip install torch torchvision",
+      "needs_h100": false,
+      "estimated_vram_gb": 8,
+      "install_steps": [
+        "pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121",
+        "pip install -r requirements.txt",
+        "mkdir -p /workspace/inputs /workspace/outputs",
+        "wget -P /workspace/inputs https://raw.githubusercontent.com/hoainho/img2threejs/main/example_inputs/SG_Stadium.png"
+      ],
+      "input_flag": "--image",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "cd /workspace/img2threejs && python3 forge/stage1_intake/probe_image.py /workspace/inputs/SG_Stadium.png && python3 forge/stage2_spec/new_pre_spec_assessment.py 'Object' --image /workspace/inputs/SG_Stadium.png --out /workspace/outputs/assessment.json && python3 forge/stage2_spec/new_sculpt_spec.py 'Object' --image /workspace/inputs/SG_Stadium.png --assessment /workspace/outputs/assessment.json --out /workspace/outputs/spec.json && python3 forge/stage2_spec/validate_sculpt_spec.py /workspace/outputs/spec.json --strict-quality && python3 forge/stage3_build/generate_threejs_factory.py /workspace/outputs/spec.json --out /workspace/outputs/SG_Stadium.ts",
+      "output_formats": [
+        "ts",
+        "json",
+        "png"
+      ],
+      "notes": "Repo requires only Python 3.10+ standard library (no pip deps). Inference is a multi-stage pipeline generating TypeScript Three.js code + comparison sheets. The output is a procedural 3D model factory, not a standard mesh file. The command chain assumes all scripts run from the cloned repo root directory.",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "SSH command failed:\nWarning: Permanently added '[154.54.102.45]:12503' (ED25519) to the list of known hosts.\nusage: new_pre_spec_assessment.py [-h] [--image IMAGE]\n                                  [--complexity {complex,moderate,simple,ultra-complex}]\n                                  [--out OUT] [--force]\n                                  target_name\nnew_pre_spec_assessment.py: error: /workspace/outputs/assessment.json already exists; use --force to overwrite\n",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/img2threejs-1784768432",
+    "cost_usd": 0.17,
+    "variant": "test",
+    "reason": "With 2,036 stars and a fresh push on July 22, 2026, this repo is worth running now\u2014its recent activity signals active development for a token-efficient, animation-ready 3D pipeline, and its star count indicates broad interest in a high-demand capability.",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "hf_subfolder": "",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-07-23T01:06:14.353364+00:00",
+    "timestamp_human": "Jul 23 2026, 01:06"
+  },
+  {
     "job_name": "Pixal3D-1784682032",
     "repo_full_name": "TencentARC/Pixal3D",
     "repo_url": "",
