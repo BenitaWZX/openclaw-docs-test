@@ -1,5 +1,57 @@
 [
   {
+    "job_name": "img2threejs-1785200431",
+    "repo_full_name": "img2threejs/img2threejs",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/openclaw-inputs/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 341,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "The original error likely occurred because dependencies were missing, so added `pip install -r requirements.txt` after cloning. Also corrected the inference command to use absolute paths for input and output files to ensure the script finds the correct files in the workspace structure, and added an explicit `cd` to the repo directory to avoid working directory issues.",
+      "The original error 'No such file or directory' occurred because the install steps attempted to clone into ~/.claude/skills/img2threejs, which does not exist on the RunPod machine (the home directory is /root, but in a containerized environment the given path is invalid). The fix: clone into /workspace/img2threejs (a writable working directory) and run all commands from there. Also the inference command was updated to run from /workspace/img2threejs (no cd needed in the command itself because the environment will be set to that directory).",
+      "The original error was likely due to missing dependencies or an incomplete installation of the img2threejs environment. The fix adds a validation step to ensure all required modules are properly installed and catches any errors before running the actual inference. Additionally, the inference command now redirects stderr to stdout to provide clearer error messages for debugging."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch torchvision",
+      "needs_h100": false,
+      "estimated_vram_gb": 16,
+      "install_steps": [
+        "git clone https://github.com/img2threejs/img2threejs.git /workspace/img2threejs",
+        "cd /workspace/img2threejs && pip install -r requirements.txt",
+        "cd /workspace/img2threejs && python3 forge/stage1_pipeline.py --validate"
+      ],
+      "input_flag": "--image",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "python3 forge/stage3_build/generate_threejs_factory.py /workspace/inputs/spec.json --out /workspace/outputs/createObjectModel.ts 2>&1",
+      "output_formats": [
+        "ts"
+      ],
+      "notes": "README_INCOMPLETE",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "SSH command failed:\nWarning: Permanently added '[154.54.102.48]:15163' (ED25519) to the list of known hosts.\n\n\nCommand '['scp', '-i', '/tmp/tmpmpc5sgtb/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '15163', '-r', 'root@154.54.102.48:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/img2threejs-1785200431/']' returned non-zero exit status 1.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/img2threejs-1785200431",
+    "cost_usd": 0.17,
+    "variant": "test",
+    "reason": "With 6,924 stars and a 21.7% growth from 5,688 since the last scan, this repo shows strong and recent community interest, and the highly active development as of July 2026 makes it timely for testing a cutting-edge, token-efficient image-to-3D pipeline.",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-07-28T01:06:13.196420+00:00",
+    "timestamp_human": "Jul 28 2026, 01:06"
+  },
+  {
     "job_name": "img2threejs-1785114029",
     "repo_full_name": "img2threejs/img2threejs",
     "repo_url": "",
