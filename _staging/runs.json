@@ -1,5 +1,57 @@
 [
   {
+    "job_name": "img2threejs-1785373250",
+    "repo_full_name": "img2threejs/img2threejs",
+    "repo_url": "https://github.com/img2threejs/img2threejs",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/openclaw-inputs/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "duration_sec": 247,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "The original install step cloned the repo to ~/.claude/skills/img2threejs, which is not accessible from /workspace. Changed the clone target to /workspace/img2threejs and added 'pip install -r requirements.txt' to ensure all dependencies are installed (the repo likely has a requirements file). The inference command also needed a 'cd /workspace/img2threejs' prefix so that the scripts can be found from the working directory, which is required by the repo's module imports.",
+      "The error occurred because the output file /workspace/outputs/assessment.json already existed from a previous run, and the `new_pre_spec_assessment.py` script requires the `--force` flag to overwrite it. I added `--force` to the second command in the inference chain. Additionally, to ensure a clean state on subsequent runs, I added a cleanup step in the install steps to remove any existing output files before execution.",
+      "The error occurred because `/workspace/outputs/spec.json` already existed from a previous run, and the `new_sculpt_spec.py` script requires the `--force` flag to overwrite it. The original command did not include `--force`. I added `--force` to the `new_sculpt_spec.py` call. To also ensure a clean state, I added explicit removal of both output files (`spec.json` and `assessment.json`) before the pipeline, which is more robust than relying solely on `--force`. No changes to installation steps were needed."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch torchvision",
+      "needs_h100": false,
+      "estimated_vram_gb": 8,
+      "install_steps": [
+        "git clone https://github.com/img2threejs/img2threejs.git /workspace/img2threejs",
+        "cd /workspace/img2threejs && pip install -r requirements.txt",
+        "rm -f /workspace/outputs/assessment.json /workspace/outputs/spec.json"
+      ],
+      "input_flag": "--image",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "cd /workspace/img2threejs && python3 forge/stage1_intake/probe_image.py /workspace/inputs/SG_Stadium.png && rm -f /workspace/outputs/spec.json /workspace/outputs/assessment.json && python3 forge/stage2_spec/new_pre_spec_assessment.py \"SG_Stadium\" --image /workspace/inputs/SG_Stadium.png --out /workspace/outputs/assessment.json --force && python3 forge/stage2_spec/new_sculpt_spec.py \"SG_Stadium\" --image /workspace/inputs/SG_Stadium.png --assessment /workspace/outputs/assessment.json --out /workspace/outputs/spec.json --force && python3 forge/stage2_spec/validate_sculpt_spec.py /workspace/outputs/spec.json --strict-quality && python3 forge/stage3_build/generate_threejs_factory.py /workspace/outputs/spec.json --out /workspace/outputs/createObjectModel.ts",
+      "output_formats": [
+        "ts"
+      ],
+      "notes": "README_INCOMPLETE",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "SSH command failed:\nWarning: Permanently added '[185.216.23.244]:34427' (ED25519) to the list of known hosts.\n",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/img2threejs-1785373250",
+    "cost_usd": 0.123,
+    "variant": "test",
+    "reason": "With 8,149 stars and a fresh release v1.4.3, this repo is well-maintained and actively developed, making it a strong candidate for a token-efficient image-to-3D pipeline that delivers procedural, animation-ready models.",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "hf_subfolder": "",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-07-30T01:04:58.164258+00:00",
+    "timestamp_human": "Jul 30 2026, 01:04"
+  },
+  {
     "job_name": "img2threejs-1785286831",
     "repo_full_name": "img2threejs/img2threejs",
     "repo_url": "https://github.com/img2threejs/img2threejs",
