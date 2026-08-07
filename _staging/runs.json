@@ -1,5 +1,59 @@
 [
   {
+    "job_name": "img2threejs-1786064442",
+    "repo_full_name": "img2threejs/img2threejs",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/openclaw-inputs/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 284,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "The SSH error indicates that the pod connection was refused or failed, likely because the pod was not ready or the SSH key was not properly set up. The install steps had symlink commands pointing to nonexistent checkouts, which would fail. I replaced them with a direct clone into the current directory and added a pip install for the project's requirements to ensure dependencies are available. The inference command is unchanged because it was correctly specified, but it now runs from inside the cloned repo.",
+      "The job failed because the environment lacked necessary dependencies or the existing ones were incompatible with the PyTorch/CUDA setup. The fix adds explicit installation of missing packages (trimesh, open3d, opencv-python-headless) and uses an extra index URL to ensure PyTorch-related packages are built for CUDA 12.1, matching the RunPod A100/H100. The inference command remains unchanged, as it was correct.",
+      "The error only shows an SSH connection warning, no actual Python error. The likely root cause is that the repository requires additional dependencies not listed in requirements.txt, such as pytorch3d or similar, or that the pip install command fails due to missing build tools. I added a check to verify the full dependency chain by importing used modules (e.g., torch, trimesh, open3d, cv2, and also numpy, scipy, sklearn) and if any fail, install them with compatible versions. Also, ensure that the script is run with the correct Python environment (python3) and that the working directory is correct. The fixed steps now explicitly test common dependencies and install missing ones to avoid the silent failure."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch torchvision",
+      "needs_h100": false,
+      "estimated_vram_gb": 24,
+      "install_steps": [
+        "git clone https://github.com/img2threejs/img2threejs.git .",
+        "pip install -r forge/stage3_build/requirements.txt --extra-index-url https://download.pytorch.org/whl/cu121",
+        "python -c \"import trimesh; print('ok')\" || pip install trimesh==3.9.35",
+        "python -c \"import open3d; print('ok')\" || pip install open3d==0.15.2",
+        "python -c \"import cv2; print('ok')\" || pip install opencv-python-headless==4.8.1.78"
+      ],
+      "input_flag": "--image",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "python3 forge/stage3_build/generate_threejs_factory.py /workspace/inputs/SG_Stadium.png --out /workspace/outputs/createObjectModel.ts",
+      "output_formats": [
+        "ts"
+      ],
+      "notes": "README is not a typical 3D reconstruction repo; it's a skill for generating Three.js models from images. No standard inference command with configs. Using the provided forge script for single image. May need to adjust paths.",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "SSH command failed:\nWarning: Permanently added '[216.81.245.83]:41656' (ED25519) to the list of known hosts.\n\n\nCommand '['scp', '-i', '/tmp/tmpi51dyva2/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '41656', '-r', 'root@216.81.245.83:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/img2threejs-1786064442/']' returned non-zero exit status 1.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/img2threejs-1786064442",
+    "cost_usd": 0.141,
+    "variant": "test",
+    "reason": "This repo is worth running now because its 10.4% star growth (9,108 \u2192 10,056) over a short period indicates surging community adoption, and its recent push (2026-08-06) ensures the codebase is actively maintained for integration into your pipeline.",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-08-07T01:05:27.653079+00:00",
+    "timestamp_human": "Aug 07 2026, 01:05"
+  },
+  {
     "job_name": "img2threejs-1785718829",
     "repo_full_name": "img2threejs/img2threejs",
     "repo_url": "",
