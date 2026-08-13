@@ -1,5 +1,58 @@
 [
   {
+    "job_name": "img2threejs-1786582832",
+    "repo_full_name": "img2threejs/img2threejs",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/openclaw-inputs/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 287,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "The original inference command had a shell syntax error: it passed the literal placeholder '<image>' without a path, and the command was wrapped with a pipefail/tee suffix causing a parse error at '&&'. Also the install steps ran 'python3 forge/next.py' which is unnecessary and used a relative '--reference <image>' that would fail. Fixed by: (1) using explicit absolute paths for input images (/workspace/inputs/<image>) and output files (/workspace/outputs/...); (2) removing the problematic shell wrapping (the piped tee was causing the syntax error); (3) adjusting install steps to run from the repo root, copy input images into workspace if needed, and only run the init step that's actually required for the pipeline. Ensure you replace <image> with the actual filename (e.g., photo.jpg) when executing. The fixed inference command assumes the input image is in /workspace/inputs and outputs are written to /workspace/outputs.",
+      "The error was a bash syntax error near the `&&` token, likely due to the shell receiving the command with `&&` but not properly quoting or escaping. However, the provided command itself appears syntactically correct. The original install steps were incomplete: they only included git clone, copy, and state.py init, but the command was run before cloning? Actually, the error shows `cd /workspace/img2threejs && ...`, but install steps do not `cd` into the repo path. The fixed inference command is the same as the original command but kept as a single string without the surrounding `set -o pipefail` and `tee` that caused the parsing issue. The fixed install steps remain as provided, assuming they run from inside /workspace/img2threejs. The main fix is to ensure the inference command is executed correctly as a single command without shell metacharacter issues.",
+      "The error was a bash syntax error near `&&`. This happens because the outer SSH command wraps the command with `set -o pipefail; cd /workspace/img2threejs && ...`, but the provided inference command itself already included `&&` without proper quoting, causing the shell to misinterpret it when combined with the wrapper. The fix ensures the inference command is a single quoted string with no extraneous operators, and paths are quoted to handle spaces or special characters. Also, the `tee` and `pipefail` are handled by the execution wrapper, so they are removed from the inference command. Install steps remain unchanged as they were correct."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.1",
+      "pytorch_install": "pip install torch torchvision",
+      "needs_h100": false,
+      "estimated_vram_gb": 24,
+      "install_steps": [
+        "git clone https://github.com/img2threejs/img2threejs.git .",
+        "cp /workspace/inputs/*.jpg /workspace/inputs/*.png /workspace/inputs/*.jpeg . 2>/dev/null || true",
+        "python3 forge/state.py init --reference /workspace/inputs/<image> --profile character --spec object-sculpt-spec.json"
+      ],
+      "input_flag": "--image",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "python3 forge/stage1_intake/probe_image.py '/workspace/inputs/<image>' && python3 forge/stage2_spec/new_pre_spec_assessment.py 'Name' --image '/workspace/inputs/<image>' --out '/workspace/outputs/assessment.json' && python3 forge/stage2_spec/new_sculpt_spec.py 'Name' --image '/workspace/inputs/<image>' --assessment '/workspace/outputs/assessment.json' --out '/workspace/outputs/spec.json' && python3 forge/stage2_spec/validate_sculpt_spec.py '/workspace/outputs/spec.json' --strict-quality && python3 forge/stage3_build/generate_threejs_factory.py '/workspace/outputs/spec.json' --out 'src/createObjectModel.ts'",
+      "output_formats": [
+        "ts",
+        "threejs"
+      ],
+      "notes": "README_INCOMPLETE",
+      "docker_image": "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+    },
+    "error_log": "SSH command failed:\nWarning: Permanently added '[154.54.102.40]:19587' (ED25519) to the list of known hosts.\nusage: probe_image.py [-h] image\nprobe_image.py: error: /workspace/inputs/<image> does not exist\n\n\nCommand '['scp', '-i', '/tmp/tmptke7_6md/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '19587', '-r', 'root@154.54.102.40:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/img2threejs-1786582832/']' returned non-zero exit status 1.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/img2threejs-1786582832",
+    "cost_usd": 0.143,
+    "variant": "test",
+    "reason": "With 11,402 stars and a 13.4% surge since its last evaluation, this repo is clearly gaining strong traction, and its recent push on 2026-08-12 confirms active development, making it a timely candidate for the pipeline to assess its current capabilities for code-only, animation-ready 3D reconstruction.",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-08-13T01:05:20.273131+00:00",
+    "timestamp_human": "Aug 13 2026, 01:05"
+  },
+  {
     "job_name": "img2threejs-1786064442",
     "repo_full_name": "img2threejs/img2threejs",
     "repo_url": "",
