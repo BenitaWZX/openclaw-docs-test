@@ -1,5 +1,61 @@
 [
   {
+    "job_name": "Hunyuan3D-2.1-1786755630",
+    "repo_full_name": "Tencent-Hunyuan/Hunyuan3D-2.1",
+    "repo_url": "",
+    "repo_stars": 0,
+    "input_files": [
+      "/home/ubuntu/openclaw-inputs/SG_Stadium.png"
+    ],
+    "input_mode": "single",
+    "gpu_type": "A100",
+    "success": false,
+    "failure_reason": "crash",
+    "duration_sec": 582,
+    "fix_attempts": 3,
+    "fix_summaries": [
+      "The original error was just an SSH warning, not a real failure. However, the inference command lacked input/output paths, which would cause gradio_app.py to use default directories and not save results to /workspace/outputs. Also, the install steps had a typo: the line 'cd hy3dpaint/custom_rasterizer' was separated from 'pip install -e .' by a newline, which would break in a single shell command. Fixed by using '&&' to chain commands in the same directory. Added --input and --output arguments to the inference command to use the required paths.",
+      "The original install steps were missing proper directory change after compiling the custom rasterizer, causing subsequent steps to run from the wrong directory and the compilation to fail. Additionally, the inference command lacked a flag to disable asynchronous model loading, which can cause the app to hang or crash on distributed/headless systems (like RunPod) due to missing file watchers or unstable threading. The fixed steps ensure each submodule compilation runs in the correct directory and verifies PyTorch/CUDA availability. The fixed command adds --disable_async_loading to avoid runtime issues and ensure the gradio app starts reliably.",
+      "The original command was launching the Gradio app but likely failed because it tried to bind to an inaccessible port or didn't open a public link, causing the SSH session to hang or error. Added --listen to bind to all interfaces and --share to create a public Gradio link so the app can be accessed from outside. Also added --no-build-isolation when installing the custom rasterizer to avoid pip re-fetching torch and causing version conflicts (which can fail compilation on a clean environment). All other installation steps remain the same to preserve the exact model setup."
+    ],
+    "cfg": {
+      "python_version": "3.10",
+      "cuda_version": "12.4",
+      "pytorch_install": "pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu124",
+      "needs_h100": false,
+      "estimated_vram_gb": 29,
+      "install_steps": [
+        "pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu124",
+        "pip install -r requirements.txt",
+        "cd hy3dpaint/custom_rasterizer && pip install -e . --no-build-isolation && cd ../..",
+        "cd hy3dpaint/DifferentiableRenderer && bash compile_mesh_painter.sh && cd ../..",
+        "wget https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth -P hy3dpaint/ckpt",
+        "python -c \"import torch; print(torch.__version__); print(torch.cuda.is_available())\""
+      ],
+      "input_flag": "--image",
+      "input_path": "/workspace/inputs",
+      "output_path": "/workspace/outputs",
+      "inference_cmd": "python3 gradio_app.py --model_path tencent/Hunyuan3D-2.1 --subfolder hunyuan3d-dit-v2-1 --texgen_model_path tencent/Hunyuan3D-2.1 --low_vram_mode --input /workspace/inputs --output /workspace/outputs --disable_async_loading --listen 0.0.0.0 --share",
+      "output_formats": [
+        "ply",
+        "obj"
+      ],
+      "notes": "The README does not provide a direct CLI inference command for a single image. The provided gradio_app.py command is for hosting a web app. For programmatic usage, the README shows Python code, but not a runnable inference CLI. Hence, the inference_cmd is the closest available command.",
+      "docker_image": "runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04"
+    },
+    "error_log": "SSH command failed:\nWarning: Permanently added '[185.216.23.206]:45647' (ED25519) to the list of known hosts.\n\n\nCommand '['scp', '-i', '/tmp/tmpsmhsht81/id_rsa', '-o', 'StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-P', '45647', '-r', 'root@185.216.23.206:/workspace/outputs/*', '/home/ubuntu/openclaw-outputs/Hunyuan3D-2.1-1786755630/']' returned non-zero exit status 1.",
+    "output_files": [],
+    "output_dir": "/home/ubuntu/openclaw-outputs/Hunyuan3D-2.1-1786755630",
+    "cost_usd": 0.289,
+    "variant": "test",
+    "reason": "With 3,846 stars and a 10% weekly growth, the repo is rapidly gaining traction, and its October 17 push shows active development\u2014making now an ideal time to run it for the latest high-fidelity PBR material generation capabilities.",
+    "hf_dataset": "Bwzx/3d-reconstructions-test",
+    "docs_repo": "/home/ubuntu/openclaw-docs-test",
+    "docs_url": "https://BenitaWZX.github.io/openclaw-docs-test",
+    "timestamp": "2026-08-15T01:10:12.916475+00:00",
+    "timestamp_human": "Aug 15 2026, 01:10"
+  },
+  {
     "job_name": "img2threejs-1786582832",
     "repo_full_name": "img2threejs/img2threejs",
     "repo_url": "",
